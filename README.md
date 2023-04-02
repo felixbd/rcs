@@ -17,7 +17,7 @@ This repository contains multiple implementations of a Rubik’s Cube solver. Th
 
 ### Implementations
 
-- [x] [Python](./py/)
+- [x] [Python3](./py/)
 - [ ] [C++](./cpp/)
 - [ ] [Haskell](./hs/)
 - [ ] [Rust](./rs/)
