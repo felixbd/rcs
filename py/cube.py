@@ -84,12 +84,12 @@ class CubeObj:
     """
     colour: bool
 
-    def __init__(self, colour=True) -> None:
+    def __init__(self, color=True) -> None:
         """
         Initialize the cube
-        :param colour: if True, the cube will be colored, otherwise it will be represented by old-pochman letters
+        :param color: if True, the cube will be colored, otherwise it will be represented by old-pochman letters
         """
-        self._board = COLOR_BOARD if colour else LETTER_BOARD
+        self._board = COLOR_BOARD if color else LETTER_BOARD
 
     def __str__(self) -> str:
         return str(np.array(self._board))

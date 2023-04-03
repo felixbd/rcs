@@ -233,7 +233,7 @@ def create_random_scrambled_cube() -> tuple[Cube, list[str]]:
     Create a random Rubik’s Cube
     :return: the cube as an object
     """
-    my_cube = Cube(colour=True)
+    my_cube = Cube(color=True)
     random_moves = rm.choices(POSSIBLE_MOVES, k=rm.randint(5, 15))
     my_cube.translate(random_moves)
 
@@ -253,7 +253,7 @@ def create_scrambled_cube(scramble: list[str]) -> Cube:
     # if not all(map(lambda x: x in POSSIBLE_MOVES, scramble)):
     #    raise ValueError('INVALID INPUT')
 
-    my_cube = Cube(colour=True)
+    my_cube = Cube(color=True)
     my_cube.translate(scramble)
 
     return my_cube
