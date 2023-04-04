@@ -29,11 +29,7 @@ from copy import deepcopy
 """
 List of all the possible moves
 """
-POSSIBLE_MOVES = [
-    f(x)
-    for x in ["F", "B", "U", "D", "L", "R"]
-    for f in [lambda x: x, lambda x: x + "2", lambda x: x + "'"]
-]
+POSSIBLE_MOVES = [f"{x}{y}" for x in "FBUDLR" for y in ["", "'", "2"]]
 
 """
 Translate rubik's cube notation to method name and number of rotation
@@ -63,18 +59,12 @@ A uppercase letter is a unique identifier for a corner piece.
 A lowercase letter is a unique identifier for an edge piece.
 """
 LETTER_BOARD = [
-    # TOP SIDE
-    [["A", "a", "B"], ["d", "𝗪", "b"], ["D", "c", "C"]],
-    # LEFT SIDE
-    [["E", "e", "F"], ["h", "𝗥", "f"], ["H", "g", "G"]],
-    # FRONT SIDE
-    [["I", "i", "J"], ["l", "𝗕", "j"], ["L", "k", "K"]],
-    # RIGHT SIDE
-    [["M", "m", "N"], ["p", "𝗢", "n"], ["P", "o", "O"]],
-    # BACK SIDE
-    [["Q", "q", "R"], ["t", "𝗚", "r"], ["T", "s", "S"]],
-    # BOTTOM SIDE
-    [["U", "u", "V"], ["x", "𝗬", "v"], ["X", "w", "W"]],
+    [["A", "a", "B"], ["d", "𝗪", "b"], ["D", "c", "C"]],  # TOP SIDE
+    [["E", "e", "F"], ["h", "𝗥", "f"], ["H", "g", "G"]],  # LEFT SIDE
+    [["I", "i", "J"], ["l", "𝗕", "j"], ["L", "k", "K"]],  # FRONT SIDE
+    [["M", "m", "N"], ["p", "𝗢", "n"], ["P", "o", "O"]],  # RIGHT SIDE
+    [["Q", "q", "R"], ["t", "𝗚", "r"], ["T", "s", "S"]],  # BACK SIDE
+    [["U", "u", "V"], ["x", "𝗬", "v"], ["X", "w", "W"]],  # BOTTOM SIDE
 ]
 
 

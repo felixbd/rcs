@@ -42,6 +42,33 @@ INDEX_TO_NAME_CENTER = {
 }
 
 """
+Translate color code of center pieces to unique (old pochmann) letter
+"""
+NAME_OF_BUFFER_PIECES_CENTER = {
+    ("w", "g"): "a", ("w", "o"): "b", ("w", "b"): "c", ("w", "r"): "d",  # top face
+    ("r", "w"): "e", ("r", "b"): "f", ("r", "y"): "g", ("r", "g"): "h",  # left face
+    ("b", "w"): "i", ("b", "o"): "j", ("b", "y"): "k", ("b", "r"): "l",  # front face
+    ("o", "w"): "m", ("o", "g"): "n", ("o", "y"): "o", ("o", "b"): "p",  # right face
+    ("g", "w"): "q", ("g", "o"): "r", ("g", "y"): "s", ("g", "r"): "t",  # back face
+    ("y", "b"): "u", ("y", "o"): "v", ("y", "g"): "w", ("y", "r"): "x",  # bottom face
+}
+
+"""
+Translate color code of corner pieces to unique (old pochmann) letter
+You should read the color of the corner piece from the top, left side and back
+"""
+NAME_OF_BUFFER_PIECES_CORNER = {
+    ("w", "r", "g"): "A", ("r", "g", "w"): "E", ("g", "w", "r"): "Q",  # TOP LEFT BACK
+    ("w", "g", "o"): "B", ("o", "w", "g"): "N", ("g", "o", "w"): "R",  # TOP RIGHT BACK
+    ("w", "o", "b"): "C", ("b", "w", "o"): "J", ("o", "b", "w"): "M",  # TOP RIGHT FRONT
+    ("w", "b", "r"): "D", ("r", "w", "b"): "F", ("b", "r", "w"): "I",  # TOP LEFT FRONT
+    ("r", "y", "g"): "H", ("g", "r", "y"): "T", ("y", "g", "r"): "X",  # BOTTOM LEFT BACK
+    ("o", "g", "y"): "O", ("g", "y", "o"): "S", ("y", "o", "g"): "W",  # BOTTOM RIGHT BACK
+    ("b", "o", "y"): "K", ("o", "y", "b"): "P", ("y", "b", "o"): "V",  # BOTTOM RIGHT FRONT
+    ("r", "b", "y"): "G", ("b", "y", "r"): "L", ("y", "r", "b"): "U",  # BOTTOM LEFT FRONT
+}
+
+"""
 PERMS USED:
 I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R' U' R' F R (F')
 II.  | R-Perm   / Parity                |  => R U' R' U' R U R D R' U' R D' R' U2 R' U'
@@ -60,7 +87,7 @@ Permutation used to swap the current buffer piece with the correct one
 """
 MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER = {
     "a": f"{J_PERM_UP}",
-    # 'b': f"",
+    # 'b': f"",  # buffer piece is already in the correct position but not oriented
     "c": f"{J_PERM_DOWN}",
     "d": f"{T_PERM}",
     "e": f"R L F R' {J_PERM_DOWN} R F' L' R'",
@@ -71,7 +98,7 @@ MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER = {
     "j": f"U2 R U2 {T_PERM} U2 R' U2",
     "k": f"R F R' L' {T_PERM} L R F' R'",
     "l": f"L' {T_PERM} L",
-    # 'm': f"",
+    # 'm': f"",  # buffer piece is already in the correct position but not oriented
     "n": f"U B U' {T_PERM} U B' U'",
     "o": f"D' R F R' L' {T_PERM} L R F' R' D",
     "p": f"U' F' U {T_PERM} U' F U",
@@ -86,89 +113,14 @@ MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER = {
 }
 
 """
-Translate color code of center pieces to unique (old pochmann) letter
-"""
-NAME_OF_BUFFER_pieces_CENTER = {
-    # top face
-    ("w", "g"): "a",
-    ("w", "o"): "b",
-    ("w", "b"): "c",
-    ("w", "r"): "d",
-    # left face
-    ("r", "w"): "e",
-    ("r", "b"): "f",
-    ("r", "y"): "g",
-    ("r", "g"): "h",
-    # front face
-    ("b", "w"): "i",
-    ("b", "o"): "j",
-    ("b", "y"): "k",
-    ("b", "r"): "l",
-    # right face
-    ("o", "w"): "m",
-    ("o", "g"): "n",
-    ("o", "y"): "o",
-    ("o", "b"): "p",
-    # back face
-    ("g", "w"): "q",
-    ("g", "o"): "r",
-    ("g", "y"): "s",
-    ("g", "r"): "t",
-    # bottom face
-    ("y", "b"): "u",
-    ("y", "o"): "v",
-    ("y", "g"): "w",
-    ("y", "r"): "x",
-}
-
-"""
-Translate color code of corner pieces to unique (old pochmann) letter
-You should read the color of the corner piece from the top, left side and back
-"""
-NAME_OF_BUFFER_pieces_CORNER = {
-    # TOP LEFT BACK
-    ("w", "r", "g"): "A",
-    ("r", "g", "w"): "E",
-    ("g", "w", "r"): "Q",
-    # TOP RIGHT BACK
-    ("w", "g", "o"): "B",
-    ("o", "w", "g"): "N",
-    ("g", "o", "w"): "R",
-    # TOP RIGHT FRONT
-    ("w", "o", "b"): "C",
-    ("b", "w", "o"): "J",
-    ("o", "b", "w"): "M",
-    # TOP LEFT FRONT
-    ("w", "b", "r"): "D",
-    ("r", "w", "b"): "F",
-    ("b", "r", "w"): "I",
-    # BOTTOM LEFT BACK
-    ("r", "y", "g"): "H",
-    ("g", "r", "y"): "T",
-    ("y", "g", "r"): "X",
-    # BOTTOM RIGHT BACK
-    ("o", "g", "y"): "O",
-    ("g", "y", "o"): "S",
-    ("y", "o", "g"): "W",
-    # BOTTOM RIGHT FRONT
-    ("b", "o", "y"): "K",
-    ("o", "y", "b"): "P",
-    ("y", "b", "o"): "V",
-    # BOTTOM LEFT FRONT
-    ("r", "b", "y"): "G",
-    ("b", "y", "r"): "L",
-    ("y", "r", "b"): "U",
-}
-
-"""
 Translate current buffer piece letter to solving algorithm
 """
 MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER = {
-    # 'A': f"",
+    # 'A': f"",  # buffer piece is already in the correct position but not oriented
     "B": f"U {J_PERM_UP} U'",
     "C": f"{Y_PERM}",
     "D": f"U2 {J_PERM_DOWN} U2",
-    # 'E': f"",
+    # 'E': f"",  # buffer piece is already in the correct position but not oriented
     "F": f"F {Y_PERM} F'",
     "G": f"D R {Y_PERM} R' D'",
     "H": f"D2 F' {Y_PERM} F D2",
@@ -180,7 +132,7 @@ MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER = {
     "N": f"R' F' U2 {J_PERM_DOWN} U2 F R",
     "O": f"D' R {Y_PERM} R' D",
     "P": f"F' {Y_PERM} F",
-    # 'Q': f"",
+    # 'Q': f"",  # buffer piece is already in the correct position but not oriented
     "R": f"R' {Y_PERM} R",
     "S": f"D' F' {Y_PERM} F D",
     "T": f"D2 R {Y_PERM} R' D2",
@@ -224,7 +176,6 @@ def timer(func):
         )
 
         return result
-
     return wrapper
 
 
@@ -234,7 +185,7 @@ def create_random_scrambled_cube() -> tuple[Cube, list[str]]:
     :return: the cube as an object
     """
     my_cube = Cube(color=True)
-    random_moves = rm.choices(POSSIBLE_MOVES, k=rm.randint(5, 15))
+    random_moves = rm.choices(POSSIBLE_MOVES, k=rm.randint(10, 15))
     my_cube.translate(random_moves)
 
     return my_cube, random_moves
@@ -260,11 +211,11 @@ def create_scrambled_cube(scramble: list[str]) -> Cube:
 
 
 @timer
-def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
+def solve_old_pochmann(cube: Cube) -> list[str]:
     """
     Solve the cube using the old pochmann method
     :param cube: the cube to be solved
-    :return:
+    :return: the solution to the cube
     """
     # list of moves to solve the cube
     moves: list[str] = []
@@ -301,7 +252,7 @@ def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
         Moves the centerpieces in the buffer to its target location
         :return: None
         """
-        buffer_letter = NAME_OF_BUFFER_pieces_CENTER[
+        buffer_letter = NAME_OF_BUFFER_PIECES_CENTER[
             (cube.board[0][1][2], cube.board[3][0][1])
         ]
 
@@ -327,8 +278,24 @@ def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
 
     def find_not_solved_corners() -> list[str]:
         """
-        :return: list of names of unsolved corner pieces, if there is none return None
+        :return: list of names of unsolved corner pieces, if there is none return the empty list
         """
+
+        """
+        TODO: the order of the elements in the second list of the zip are not quite right
+        
+        return ["BCDFGHIJKLMNOPRSTUVWX"[i]
+            for (i, (a, b, c))
+            in zip(range(21),
+                   [(i, j, k)
+                    for i in range(6)
+                    for j, k in [(0, 0), (0, 2), (2, 0), (2, 2)]
+                    if i not in [0, 1, 4] or j != 0 or k != 0
+                    ])
+            if cube.board[a][b][c] != 'wrbogy'[a]
+            ]
+        """
+
         return ["BCDFGHIJKLMNOPRSTUVWX"[i]
                 for (i, (a, b, c))
                 in zip(range(21),
@@ -339,7 +306,8 @@ def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
                         (4, 0, 2), (4, 2, 2), (4, 2, 0),             # BACK Face
                         (5, 0, 0), (5, 0, 2), (5, 2, 2), (5, 2, 0)   # BOTTOM Face
                         ])
-                if cube.board[a][b][c] != 'wrbogy'[a]]
+                if cube.board[a][b][c] != 'wrbogy'[a]
+                ]
 
     def move_corner_buffer_to_target_location() -> None:
         """
@@ -347,7 +315,7 @@ def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
         :return: None
         """
 
-        buffer = NAME_OF_BUFFER_pieces_CORNER[
+        buffer = NAME_OF_BUFFER_PIECES_CORNER[
             (cube.board[0][0][0], cube.board[1][0][0], cube.board[4][0][0])
         ]
 
@@ -393,7 +361,7 @@ def solve_old_pochmann(cube: Cube) -> tuple[list[str], Cube]:
     # solve all corner pieces
     move_corner_buffer_to_target_location()
 
-    return moves, cube
+    return moves
 
 
 def solution_schedule() -> None:
@@ -412,17 +380,36 @@ def solution_schedule() -> None:
     else:
         test_cube, scramble = create_random_scrambled_cube()
 
-    print(f"Scrambled Cube:\n\n{str(test_cube)}\n\n"
-          f"Solution: {solve_old_pochmann(test_cube)[0]}\n"
+    # ---------------------------- solve the cube ----------------------------
+
+    print(f"Scramble: {' '.join(scramble)}\n"
+          f"Scrambled Cube:\n\n{str(test_cube)}\n")
+
+    solution = solve_old_pochmann(test_cube)
+    edge_count = sum(map(lambda x: x in ascii_lowercase, solution))
+    s_center, s_corner = solution[:edge_count], solution[edge_count:]
+
+    solution_moves = []
+    solution_moves += map(lambda x: MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER[x], s_center)
+
+    if s_corner[0] == "Parity":
+        solution_moves.append(R_PERM)
+        s_corner = s_corner[1:]
+
+    solution_moves += map(lambda x: MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER[x], s_corner)
+
+    print(f"Solution: {' '.join(solution)}\n"
+          f"Permutation: {' '.join(solution_moves)}\n"
+          f"Solution score: {len((' '.join(solution_moves)).split()) / 20} (1.0 is optimal)\n"
           f"Solved Cube:\n\n{str(test_cube)}")
 
 
 def test() -> None:
     def create_random_cube_and_solve() -> None:
         cube, scramble = create_random_scrambled_cube()
-        print(f"{'-'*20}\nscramble: {scramble}")
-        solving_moves, new_cube = solve_old_pochmann(cube)
-        print(f"Solving moves: {solving_moves}")
+        print(f"{'-'*80}\nscramble: {' '.join(scramble)}")
+        solving_moves = solve_old_pochmann(cube)
+        print(f"Solving moves: {' '.join(solving_moves)}")
 
     number = 100
     total_time = timeit.timeit(create_random_cube_and_solve, number=number)

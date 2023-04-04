@@ -47,6 +47,6 @@ import main as rcs_main
 test_cube, _ = rcs_main.create_random_scrambled_cube()
 
 print(f"\nScrambled Cube:\n\n{str(test_cube)}\n")
-print(f"Solution: {rcs_main.solve_old_pochmann(test_cube)[0]}\n")
+print(f"Solution: {rcs_main.solve_old_pochmann(test_cube)}\n")
 print(f"\nSolved Cube:\n\n{str(test_cube)}\n")
 ```
