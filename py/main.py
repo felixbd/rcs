@@ -280,34 +280,20 @@ def solve_old_pochmann(cube: Cube) -> list[str]:
         """
         :return: list of names of unsolved corner pieces, if there is none return the empty list
         """
-
-        """
-        TODO: the order of the elements in the second list of the zip are not quite right
         
-        return ["BCDFGHIJKLMNOPRSTUVWX"[i]
-            for (i, (a, b, c))
-            in zip(range(21),
-                   [(i, j, k)
-                    for i in range(6)
-                    for j, k in [(0, 0), (0, 2), (2, 0), (2, 2)]
-                    if i not in [0, 1, 4] or j != 0 or k != 0
-                    ])
-            if cube.board[a][b][c] != 'wrbogy'[a]
-            ]
-        """
-
         return ["BCDFGHIJKLMNOPRSTUVWX"[i]
                 for (i, (a, b, c))
                 in zip(range(21),
-                       [(0, 0, 2), (0, 2, 2), (0, 2, 0),             # TOP Face
-                        (1, 0, 2), (1, 2, 2), (1, 2, 0),             # LEFT Face
-                        (2, 0, 0), (2, 0, 2), (2, 2, 0), (2, 2, 2),  # FRONT Face
-                        (3, 0, 0), (3, 0, 2), (3, 2, 0), (3, 2, 2),  # RIGHT Face
-                        (4, 0, 2), (4, 2, 2), (4, 2, 0),             # BACK Face
-                        (5, 0, 0), (5, 0, 2), (5, 2, 2), (5, 2, 0)   # BOTTOM Face
-                        ])
+                       [(i, j, k)
+                        for i in range(6)
+                        for j, k in ([(0, 2), (2, 2), (2, 0)]
+                                     if i in [0,1,4] else
+                                     [(0, 0), (0, 2),
+                                          *(lambda t: t if i < 5 else t[::-1])([(2, 0), (2, 2)])
+                                     ])
+                       ])
                 if cube.board[a][b][c] != 'wrbogy'[a]
-                ]
+            ]
 
     def move_corner_buffer_to_target_location() -> None:
         """
