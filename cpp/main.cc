@@ -8,7 +8,6 @@
 #include <iostream>
 #include <string>
 
-#include "./main.hh"
 #include "./rubiks-cube.hh"
 
 int main() {
@@ -17,7 +16,7 @@ int main() {
 
     // printing out the current element at a given point
     std::cout << "the element at (4,2,1) is: "
-              << abc.getBoardElement(4, 2, 1)
+              << abc.getBoardElement(2, 1, 0)
               << std::endl;
 
     // printing all elements

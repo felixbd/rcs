@@ -13,6 +13,22 @@ Work in progress!
 You can check the style of the code by running `make checkstyle`.
 Internally, this runs googles `cpplint` https://github.com/google/styleguide/tree/gh-pages/cpplint.
 
+install `cpplint` using `pip3`
+
+```shell
+pip3 install cpplint
+```
+
+---
+
+### Tests
+
+Install `gtest` using `apt`
+
+```shell
+apt install libgtest-dev
+```
+
 ---
 
 ## Building

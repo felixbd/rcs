@@ -1,5 +1,6 @@
 ##
 # rubiks cube solver using old pochman
+# (c) Felix Drees - GNU GENERAL PUBLIC LICENSE
 #
 # @file
 # @version 0.1
@@ -7,7 +8,7 @@
 CC=g++
 INCDIRS=-I.
 OPT=3
-CFLAGS=-Wall -Wextra -g $(INCDIRS) -O$(OPT)
+CFLAGS=-Wall -Wextra -Wpedantic -g $(INCDIRS) -O$(OPT)
 
 OBJECTS=rubiks-cube.o main.o
 TEST-OBJECTS=rubiks-cube-test.o rubiks-cube.o
@@ -25,8 +26,10 @@ test: $(TEST-OBJECTS)
 	$(CC) $^ -l gtest -l pthread -o test.o
 	./test.o
 
+# install `cpplint` via `pip3`:
+#  `pip3 install cpplint`
 checkstyle:
-	python3 cpplint.py  --repository=. *.cc *.hh
+	cpplint --repository=. *.cc *.hh
 
 run:
 	./$(MAIN)
