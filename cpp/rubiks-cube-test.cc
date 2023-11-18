@@ -10,13 +10,11 @@
 // Test for printing faces of a cube
 ///////////////////////////////////////////////////////////////////////////////
 TEST(MainCubeHelperTest, rubikscubePrintFace) {
-    FACE x = {
-        {
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9}
-        }
-    };
+    rubikscube::FACE x = {{
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    }};
 
     ASSERT_EQ(rubikscube::printFace(x), "123\n456\n789\n")
         << "printing cube face";
@@ -24,21 +22,17 @@ TEST(MainCubeHelperTest, rubikscubePrintFace) {
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST(MainCubeHelperTest, rubikscubeRotateMatrix) {
-    FACE a = {
-        {
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9}
-        }
-    };
+    rubikscube::FACE a = {{
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    }};
 
-    FACE b = {
-        {
-            {7, 4, 1},
-            {8, 5, 2},
-            {9, 6, 3}
-        }
-    };
+    rubikscube::FACE b = {{
+        {7, 4, 1},
+        {8, 5, 2},
+        {9, 6, 3}
+    }};
 
     ASSERT_EQ(a, rubikscube::rotateMatrix(a, 4)) << "rotating matrix (4x)";
 

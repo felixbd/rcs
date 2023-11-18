@@ -13,7 +13,7 @@
 
 namespace rubikscube {
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 std::string printFace(FACE face) {
     std::string rvString;
 
@@ -26,7 +26,7 @@ std::string printFace(FACE face) {
     return rvString;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 FACE rotateMatrix(FACE a, int num) {
     for (int index = 0; index < num; index++) {
         // Transposing the matrix
@@ -45,15 +45,15 @@ FACE rotateMatrix(FACE a, int num) {
     return a;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 Cube::Cube() {
     board = SOLVED_BOARD;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 Cube::~Cube() = default;
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 FACE Cube::getFace(int a) {
     if (a < 0 || a > 5) {
         throw std::invalid_argument("INDEX OF getFace out of bound");
@@ -61,7 +61,7 @@ FACE Cube::getFace(int a) {
     return board[a];
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 int Cube::getBoardElement(int x, int y, int z) {
     if (x < 0 || x > 5) {
         throw std::invalid_argument("INDEX OF getBordElement x out of bound");
@@ -74,7 +74,7 @@ int Cube::getBoardElement(int x, int y, int z) {
     return board[x][y][z];
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 std::ostream& operator<<(std::ostream& pOstream, Cube& c) {
     return pOstream << printFace(c.getFace(0))
                     << "---\n"
@@ -90,7 +90,7 @@ std::ostream& operator<<(std::ostream& pOstream, Cube& c) {
                     << std::endl;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 bool operator==(Cube a, Cube b) {
     for (int x = 0; x < 6; x++) {
       for (int y = 0; y < 3; y++) {
@@ -104,7 +104,7 @@ bool operator==(Cube a, Cube b) {
     return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::manipulation(std::vector<std::string> const& instructions) {
     // the number of times each manipulation should be performed
     int num;
@@ -128,7 +128,7 @@ void Cube::manipulation(std::vector<std::string> const& instructions) {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::front() {
     // get the current relevant values
     ROW whiteRow  = board[0][2];
@@ -144,7 +144,7 @@ void Cube::front() {
     board[2] = rotateMatrix(board[2], 1);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::back() {
     // get the current relevant values
     ROW whiteRow =  { board[0][0][2], board[0][0][1], board[0][0][0] };
@@ -160,7 +160,7 @@ void Cube::back() {
     board[4] = rotateMatrix(board[4], 3);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::up() {
     // get the current state of the cube
     ROW blueRow   = board[2][0];
@@ -176,7 +176,7 @@ void Cube::up() {
     board[0] = rotateMatrix(board[0], 1);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::down() {
     // get the current state of the cube
     ROW blueRow   = board[2][2];
@@ -192,7 +192,7 @@ void Cube::down() {
     board[5] = rotateMatrix(board[5], 1);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::left() {
     // get the current state of the cube
     ROW whiteRow =  { board[0][0][0], board[0][1][0], board[0][2][0] };
@@ -208,7 +208,7 @@ void Cube::left() {
     board[1] = rotateMatrix(board[1], 1);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+// ____________________________________________________________________________
 void Cube::right() {
     // get the current state of the cube
     ROW whiteRow =  { board[0][2][2], board[0][1][2], board[0][0][2] };

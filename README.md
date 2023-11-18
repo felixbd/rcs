@@ -50,4 +50,43 @@ This repository contains multiple implementations of a Rubik’s Cube solver. Th
 >
 > https://en.wikipedia.org/wiki/Rubik%27s_Cube Singmaster notation
 
+![cube image](./docs/cube.png)
+
+<!--
+\documentclass{minimal}
+\usepackage{tikz,tikz-3dplot}
+
+\usepackage{xcolor}
+\pagecolor[RGB]{40,42,54}
+\color{white}
+
+\begin{document}
+  \tdplotsetmaincoords{70}{115}
+\begin{figure}
+\centering
+  \begin{tikzpicture}[scale=4,tdplot_main_coords]
+    \coordinate (O) at (0,0,0);
+    \tdplotsetcoord{P}{1.414213}{54.68636}{45}
+    
+    \draw[fill=green,fill opacity=1] (O) -- (Py) -- (Pyz) -- (Pz) -- cycle;
+    \draw[fill=yellow,fill opacity=1] (O) -- (Px) -- (Pxy) -- (Py) -- cycle;
+    \draw[fill=red,fill opacity=1] (O) -- (Px) -- (Pxz) -- (Pz) -- cycle;
+    \draw[fill=white,fill opacity=0.7] (Pz) -- (Pyz) -- (P) -- (Pxz) -- cycle;
+    \draw[fill=blue,fill opacity=0.4] (Px) -- (Pxy) -- (P) -- (Pxz) -- cycle;
+    \draw[fill=orange,fill opacity=1] (Py) -- (Pxy) -- (P) -- (Pyz) -- cycle;
+
+  \end{tikzpicture}
+\caption{
+\\white (Top face, nr. 1)\\
+red (Left face, nr. 2)\\
+blue (Front face, nr. 3)\\
+orange (Right face, id 4)\\
+green (Back face, nr. 5)\\
+yellow (Bottom face, nr. 6)\\
+} \label{fig:M1}
+\end{figure}
+
+\end{document}
+-->
+
 ----------

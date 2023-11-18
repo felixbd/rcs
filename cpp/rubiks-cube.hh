@@ -11,9 +11,9 @@
 
 namespace rubikscube {
 
-#define ROW std::array<int, 3>
-#define FACE std::array<ROW, 3>
-#define BOARD std::array<FACE, 6>
+using ROW = std::array<int, 3>;
+using FACE = std::array<ROW, 3>;
+using BOARD = std::array<FACE, 6>;
 
 /**
  * Returns a string with all Values of the given Face of the Cube.
@@ -27,55 +27,42 @@ FACE rotateMatrix(FACE a, int num);
 
 /**
  * SOLVED_BOARD contains a list of all faces of a solved cube.
+ *
  * https://stackoverflow.com/a/62252088
  * >>Note the extra set of braces. It seems a bit odd but ...<<
  * */
-const BOARD SOLVED_BOARD = {
-        {
-                {
-                        {
-                                {0, 0, 0},
-                                {0, 0, 0},
-                                {0, 0, 0}
-                        }
-                },
-                {
-                        {
-                                {1, 1, 1},
-                                {1, 1, 1},
-                                {1, 1, 1}
-                        }
-                },
-                {
-                        {
-                                {2, 2, 2},
-                                {2, 2, 2},
-                                {2, 2, 2}
-                        }
-                },
-                {
-                        {
-                                {3, 3, 3},
-                                {3, 3, 3},
-                                {3, 3, 3}
-                        }
-                },
-                {
-                        {
-                                {4, 4, 4},
-                                {4, 4, 4},
-                                {4, 4, 4}
-                        }
-                },
-                {
-                        {
-                                {5, 5, 5},
-                                {5, 5, 5},
-                                {5, 5, 5}
-                        }
-                }
-        }
-};
+const BOARD SOLVED_BOARD = {{
+    {{
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0}
+    }},
+    {{
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    }},
+    {{
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2}
+    }},
+    {{
+        {3, 3, 3},
+        {3, 3, 3},
+        {3, 3, 3}
+    }},
+    {{
+        {4, 4, 4},
+        {4, 4, 4},
+        {4, 4, 4}
+    }},
+    {{
+        {5, 5, 5},
+        {5, 5, 5},
+        {5, 5, 5}
+    }}
+}};
 
 /**
  * MANIPULATION_TO_INT contains all allowed manipulations and there corresponding id.
