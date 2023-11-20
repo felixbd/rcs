@@ -3,7 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include <vector>
+// #include <vector>
+
 #include "./rubiks-cube.hh"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,13 +62,319 @@ TEST(MainCubeTest, checkEq) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// TODO(me) ...
-TEST(MainCubeManipulationTest, front) {}
-TEST(MainCubeManipulationTest, back) {}
-TEST(MainCubeManipulationTest, top) {}
-TEST(MainCubeManipulationTest, down) {}
-TEST(MainCubeManipulationTest, left) {}
-TEST(MainCubeManipulationTest, right) {}
+TEST(MainCubeManipulationTest, front) {
+    // create cube obj
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the front face clockwise
+    c1.front();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE frontFace = {{
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2}
+    }};
+
+    rubikscube::FACE backFace = {{
+        {4, 4, 4},
+        {4, 4, 4},
+        {4, 4, 4}
+    }};
+
+    rubikscube::FACE upFace = {{
+        {0, 0, 0},
+        {0, 0, 0},
+        {1, 1, 1}  // from the left to the top
+    }};
+
+    rubikscube::FACE downFace = {{
+        {3, 3, 3},  // from the right to the bottom
+        {5, 5, 5},
+        {5, 5, 5}
+    }};
+
+    rubikscube::FACE leftFace = {{
+        {1, 1, 5},
+        {1, 1, 5},
+        {1, 1, 5}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {0, 3, 3},
+        {0, 3, 3},
+        {0, 3, 3}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should not be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST(MainCubeManipulationTest, back) {
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the back face counterclockwise
+    c1.back();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE frontFace = {{
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2}
+    }};
+
+    rubikscube::FACE backFace = {{
+        {4, 4, 4},
+        {4, 4, 4},
+        {4, 4, 4}
+    }};
+
+    rubikscube::FACE upFace = {{
+        {3, 3, 3},  // from the right to the top
+        {0, 0, 0},
+        {0, 0, 0}
+    }};
+
+    rubikscube::FACE downFace = {{
+        {5, 5, 5},  // from the left to the bottom
+        {5, 5, 5},
+        {1, 1, 1}
+    }};
+
+    rubikscube::FACE leftFace = {{
+        {0, 1, 1},
+        {0, 1, 1},
+        {0, 1, 1}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {3, 3, 5},
+        {3, 3, 5},
+        {3, 3, 5}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should not be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST(MainCubeManipulationTest, top) {
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the top face
+    c1.up();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE upFace = {{
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0}
+    }};
+
+    rubikscube::FACE downFace = {{
+        {5, 5, 5},
+        {5, 5, 5},
+        {5, 5, 5}
+    }};
+
+    rubikscube::FACE leftFace = {{
+        {2, 2, 2},  // from front to left
+        {1, 1, 1},
+        {1, 1, 1}
+    }};
+
+    rubikscube::FACE frontFace = {{
+        {3, 3, 3},
+        {2, 2, 2},
+        {2, 2, 2}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {4, 4, 4},
+        {3, 3, 3},
+        {3, 3, 3}
+    }};
+
+    rubikscube::FACE backFace = {{
+        {1, 1, 1},
+        {4, 4, 4},
+        {4, 4, 4}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should not be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST(MainCubeManipulationTest, down) {
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the bottom face
+    c1.down();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE upFace = {{
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0}
+    }};
+
+    rubikscube::FACE downFace = {{
+        {5, 5, 5},
+        {5, 5, 5},
+        {5, 5, 5}
+    }};
+
+    rubikscube::FACE leftFace = {{
+        {1, 1, 1},
+        {1, 1, 1},
+        {4, 4, 4}  // from back to left
+    }};
+
+    rubikscube::FACE frontFace = {{
+        {2, 2, 2},
+        {2, 2, 2},
+        {1, 1, 1}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {3, 3, 3},
+        {3, 3, 3},
+        {2, 2, 2}
+    }};
+
+    rubikscube::FACE backFace = {{
+        {4, 4, 4},
+        {4, 4, 4},
+        {3, 3, 3}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should not be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST(MainCubeManipulationTest, left) {
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the left face
+    c1.left();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE leftFace = {{
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {3, 3, 3},
+        {3, 3, 3},
+        {3, 3, 3}
+    }};
+
+    rubikscube::FACE upFace = {{
+        {4, 0, 0},
+        {4, 0, 0},
+        {4, 0, 0}
+    }};
+
+    rubikscube::FACE downFace = {{
+        {2, 5, 5},
+        {2, 5, 5},
+        {2, 5, 5}
+    }};
+
+    rubikscube::FACE frontFace = {{
+        {0, 2, 2},
+        {0, 2, 2},
+        {0, 2, 2}
+    }};
+
+
+
+    rubikscube::FACE backFace = {{
+        {5, 4, 4},
+        {5, 4, 4},
+        {5, 4, 4}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should not be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST(MainCubeManipulationTest, right) {
+    rubikscube::Cube c1 = rubikscube::Cube();
+
+    // rotate the right face
+    c1.right();
+
+    // check if manipulation was done correctly
+    rubikscube::FACE leftFace = {{
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    }};
+
+    rubikscube::FACE rightFace = {{
+        {3, 3, 3},
+        {3, 3, 3},
+        {3, 3, 3}
+    }};
+
+    rubikscube::FACE upFace = {{
+        {0, 0, 2},
+        {0, 0, 2},
+        {0, 0, 2}
+    }};
+
+    rubikscube::FACE downFace = {{
+        {5, 5, 4},
+        {5, 5, 4},
+        {5, 5, 4}
+    }};
+
+    rubikscube::FACE frontFace = {{
+        {2, 2, 5},
+        {2, 2, 5},
+        {2, 2, 5}
+    }};
+
+    rubikscube::FACE backFace = {{
+        {4, 4, 0},
+        {4, 4, 0},
+        {4, 4, 0}
+    }};
+
+    EXPECT_EQ(c1.getFace(0), upFace) << "up face should be rotated";
+    EXPECT_EQ(c1.getFace(1), leftFace) << "left face should be rotated";
+    EXPECT_EQ(c1.getFace(2), frontFace) << "front face should not be rotated";
+    EXPECT_EQ(c1.getFace(3), rightFace) << "right face should be rotated";
+    EXPECT_EQ(c1.getFace(4), backFace) << "back face should be rotated";
+    EXPECT_EQ(c1.getFace(5), downFace) << "down face should be rotated";
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST(MainCubeManipulationTest, checkCubeManipulation) {

@@ -49,6 +49,7 @@ This repository contains multiple implementations of a Rubik’s Cube solver. Th
 >> side clockwise, but R' is right side anticlockwise. ...
 >
 > https://en.wikipedia.org/wiki/Rubik%27s_Cube Singmaster notation
+> http://www.sporenberg-marl.de/Rubik_Cube_Notation.html `Die Notation des Rubiks Cube` with nice graphics
 
 ![cube image](./docs/cube.png)
 

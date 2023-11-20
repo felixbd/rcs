@@ -2,13 +2,13 @@
 // Created by felix on 12.10.2022 (dd.mm.yyyy)
 //
 
-
 #include <array>
 #include <vector>
 #include <iostream>
-#include <string>
+// #include <string>
 
 #include "./rubiks-cube.hh"
+
 
 int main() {
     // create a cube obj
@@ -25,6 +25,7 @@ int main() {
     // performing manipulations
     std::cout << "performing manipulations: U B2 B'\n" << std::endl;
     std::vector<std::string> testMan = {"U", "B2", "D'"};
+    // std::vector<std::string> testMan = {"F", "B2", "F'", "B2"};
     abc.manipulation(testMan);
 
     // printing all elements

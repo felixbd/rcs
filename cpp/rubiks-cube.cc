@@ -6,8 +6,8 @@
 #include <map>
 #include <vector>
 #include <iostream>
-#include <string>
-#include <stdexcept>
+// #include <string>
+// #include <stdexcept>
 
 #include "./rubiks-cube.hh"
 
@@ -105,12 +105,27 @@ bool operator==(Cube a, Cube b) {
 }
 
 // ____________________________________________________________________________
-void Cube::manipulation(std::vector<std::string> const& instructions) {
+void Cube::manipulation(std::vector<std::string> const &instructions) {
     // the number of times each manipulation should be performed
     int num;
 
+    if (instructions.empty()) {
+        std::cerr << "ERROR: manipulation() called with empty instructions"
+                  << std::endl;
+        return;
+    }
+
     // loop over every instruction
     for (const std::string& instruction : instructions) {
+        if (instruction.length() > 3 || instruction.length() < 1
+            || MANIPULATION_TO_INT.find(instruction[0]) == MANIPULATION_TO_INT.end()
+            || (instruction.length() == 3 && instruction[1] != '\'' && instruction[1] != '2')
+            ) {
+            std::cerr << "ERROR: manipulation() called with invalid instruction"
+                      << std::endl;
+            return;
+        }
+
         num = (instruction.length() == 1) ? 1 :
                 (instruction[1] == '2') ? 2 : 3;
         // perform manipulation (n times)
