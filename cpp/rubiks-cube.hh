@@ -5,8 +5,8 @@
 #ifndef RUBIKS_CUBE_HH_
 #define RUBIKS_CUBE_HH_
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 namespace rubikscube {
@@ -31,117 +31,90 @@ FACE rotateMatrix(FACE a, int num);
  * https://stackoverflow.com/a/62252088
  * >>Note the extra set of braces. It seems a bit odd but ...<<
  * */
-const BOARD SOLVED_BOARD = {{
-    {{
-        {0, 0, 0},
-        {0, 0, 0},
-        {0, 0, 0}
-    }},
-    {{
-        {1, 1, 1},
-        {1, 1, 1},
-        {1, 1, 1}
-    }},
-    {{
-        {2, 2, 2},
-        {2, 2, 2},
-        {2, 2, 2}
-    }},
-    {{
-        {3, 3, 3},
-        {3, 3, 3},
-        {3, 3, 3}
-    }},
-    {{
-        {4, 4, 4},
-        {4, 4, 4},
-        {4, 4, 4}
-    }},
-    {{
-        {5, 5, 5},
-        {5, 5, 5},
-        {5, 5, 5}
-    }}
-}};
+const BOARD SOLVED_BOARD = {{{{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}},
+                             {{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}},
+                             {{{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}},
+                             {{{3, 3, 3}, {3, 3, 3}, {3, 3, 3}}},
+                             {{{4, 4, 4}, {4, 4, 4}, {4, 4, 4}}},
+                             {{{5, 5, 5}, {5, 5, 5}, {5, 5, 5}}}}};
 
 /**
- * MANIPULATION_TO_INT contains all allowed manipulations and there corresponding id.
+ * MANIPULATION_TO_INT contains all allowed manipulations and there
+ * corresponding id.
  * */
-const std::map<char, int> MANIPULATION_TO_INT = {
-        {'F', 0}, {'B', 1}, {'U', 2},
-        {'D', 3}, {'L', 4}, {'R', 5}
-};
+const std::map<char, int> MANIPULATION_TO_INT = {{'F', 0}, {'B', 1}, {'U', 2},
+                                                 {'D', 3}, {'L', 4}, {'R', 5}};
 
 /**
  * A class that represents a Rubik's Cube.
  * */
 class Cube {
- protected:
-    /**
-     * Nested array witch contains the current cube state.
-     * The Rubik's Cube contains fo 6 Faces with each 3 Rows
-     * and 3 Columns.
-     * */
-    BOARD board{};
+protected:
+  /**
+   * Nested array witch contains the current cube state.
+   * The Rubik's Cube contains fo 6 Faces with each 3 Rows
+   * and 3 Columns.
+   * */
+  BOARD board{};
 
- public:
-    Cube();
-    ~Cube();
+public:
+  Cube();
+  ~Cube();
 
-    /**
-     * Returns a ptr to the current board.
-     * */
-    // BOARD* getBoard();
+  /**
+   * Returns a ptr to the current board.
+   * */
+  // BOARD* getBoard();
 
-    /**
-     * Return the selected Face of the Cube.
-     * */
-    FACE getFace(int a);
+  /**
+   * Return the selected Face of the Cube.
+   * */
+  FACE getFace(int a);
 
-    /**
-     * Update the current board.
-     * TODO(me) how to check if a given board is solvable and valid
-     * */
-     // void setBoard(int* pBoard);
+  /**
+   * Update the current board.
+   * TODO(me) how to check if a given board is solvable and valid
+   * */
+  // void setBoard(int* pBoard);
 
-    /**
-     * Get the element at a given index (x, y, z)
-     * */
-    int getBoardElement(int x, int y, int z);
+  /**
+   * Get the element at a given index (x, y, z)
+   * */
+  int getBoardElement(int x, int y, int z);
 
-    /**
-     * Manipulate the Rubik's Cube Class with the given Cube notation.
-     * For mor information about the notation refer to the README.md
-     * */
-    void manipulation(std::vector<std::string> const& instructions);
+  /**
+   * Manipulate the Rubik's Cube Class with the given Cube notation.
+   * For mor information about the notation refer to the README.md
+   * */
+  void manipulation(std::vector<std::string> const &instructions);
 
-    /**
-     * Atomic cube manipulations.
-     * */
+  /**
+   * Atomic cube manipulations.
+   * */
 
-    // rotate the front face (blue) of the cube by 90⁰ clockwise
-    void front();
+  // rotate the front face (blue) of the cube by 90⁰ clockwise
+  void front();
 
-    // rotate the back face (green) of the cube by 90⁰ counterclockwise
-    void back();
+  // rotate the back face (green) of the cube by 90⁰ counterclockwise
+  void back();
 
-    // rotate the up face (white) of the cube by 90⁰ clockwise
-    void up();
+  // rotate the up face (white) of the cube by 90⁰ clockwise
+  void up();
 
-    // rotate the down face (yellow) of the cube by 90⁰ clockwise
-    void down();
+  // rotate the down face (yellow) of the cube by 90⁰ clockwise
+  void down();
 
-    // rotate the left face (red) of the cube by 90⁰ clockwise
-    void left();
+  // rotate the left face (red) of the cube by 90⁰ clockwise
+  void left();
 
-    // rotate the right face (orange) of the cube by 90⁰ clockwise
-    void right();
-};  // end-class Cube
+  // rotate the right face (orange) of the cube by 90⁰ clockwise
+  void right();
+}; // end-class Cube
 
 /**
  * Printing the current board of the cube.
  * */
-std::ostream& operator<<(std::ostream& pOstream, Cube& c);
+std::ostream &operator<<(std::ostream &pOstream, Cube &c);
 
 /**
  * Check if tow Cube objects are representing the same Cube.
@@ -149,6 +122,6 @@ std::ostream& operator<<(std::ostream& pOstream, Cube& c);
  * */
 bool operator==(Cube a, Cube b);
 
-}  // namespace rubikscube
+} // namespace rubikscube
 
-#endif  // RUBIKS_CUBE_HH_
+#endif // RUBIKS_CUBE_HH_

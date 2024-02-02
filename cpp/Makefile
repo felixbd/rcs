@@ -27,7 +27,8 @@ test: $(TEST-OBJECTS)
 	./run-test.o
 
 format:
-	clang-format -i -style=llvm $(MAIN)
+	# clang-format -i -style=llvm main.cc *.cc *.hh ...
+	ls *.{cc,hh} | clang-format -style=llvm
 
 checkstyle:
 	cpplint --linelength=80 --repository=. *.cc *.hh

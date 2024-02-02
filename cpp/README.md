@@ -23,7 +23,16 @@ pip3 install cpplint
 
 ### Tests
 
-Install `gtest` using `apt`
+Install `gtest` using
+
+
+#### `nix`
+
+```shell
+nix-shell -p gtest
+```
+
+#### `apt`
 
 ```shell
 apt install libgtest-dev
