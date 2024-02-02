@@ -28,7 +28,7 @@ test: $(TEST-OBJECTS)
 
 format:
 	# clang-format -i -style=llvm main.cc *.cc *.hh ...
-	ls *.{cc,hh} | clang-format -style=llvm
+	ls *.{cc,hh} | clang-format -style=llvm  # gnu google
 
 checkstyle:
 	cpplint --linelength=80 --repository=. *.cc *.hh

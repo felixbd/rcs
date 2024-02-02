@@ -4,6 +4,7 @@
 
 #include <array>
 #include <iostream>
+#include <numeric>
 #include <vector>
 // #include <string>
 
@@ -11,6 +12,17 @@
 
 int main() {
   // create a cube obj
+  rubikscube::Cube myCube = rubikscube::Cube();
+  std::vector<std::string> randomShuffel = rubikscube::getRandomShuffel(5);
+  myCube.manipulation(randomShuffel);
+
+  std::cout << "Cube after applying ->"
+            << std::accumulate(randomShuffel.begin(), randomShuffel.end(),
+                               std::string(""))
+            << "<-" << std::endl
+            << "results in:" << std::endl
+            << myCube << std::endl;
+
   rubikscube::Cube abc = rubikscube::Cube();
 
   // printing out the current element at a given point

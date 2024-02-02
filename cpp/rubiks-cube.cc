@@ -26,6 +26,31 @@ std::string printFace(FACE face) {
   return rvString;
 }
 
+// ----------------------------------------------------------------------------
+std::vector<std::string> getRandomShuffel(size_t n) {
+  // Create a vector to store randomly selected elements
+  std::vector<std::string> randomElements;
+
+  // Check if n is greater than the size of inputArray
+  if (n > ALL_MOVES.size()) {
+    std::cerr << "Error: n is greater than the size of the input array.\n";
+    return randomElements;
+  }
+
+  // Create a random number generator
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0, ALL_MOVES.size() - 1);
+
+  // Select n random elements from inputArray
+  for (size_t i = 0; i < n; ++i) {
+    int randomIndex = dis(gen);
+    randomElements.push_back(ALL_MOVES[randomIndex]);
+  }
+
+  return randomElements;
+}
+
 // ____________________________________________________________________________
 FACE rotateMatrix(FACE a, int num) {
   for (int index = 0; index < num; index++) {

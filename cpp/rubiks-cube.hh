@@ -5,7 +5,10 @@
 #ifndef RUBIKS_CUBE_HH_
 #define RUBIKS_CUBE_HH_
 
+#include <array>
+#include <iostream>
 #include <map>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -37,6 +40,18 @@ const BOARD SOLVED_BOARD = {{{{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}},
                              {{{3, 3, 3}, {3, 3, 3}, {3, 3, 3}}},
                              {{{4, 4, 4}, {4, 4, 4}, {4, 4, 4}}},
                              {{{5, 5, 5}, {5, 5, 5}, {5, 5, 5}}}}};
+
+/**
+ * A array of all possible moves.
+ * */
+const std::array<std::string, 18> ALL_MOVES = {
+    "F", "F'", "F2", "B", "B'", "B2", "U", "U'", "U2",
+    "D", "D'", "D2", "L", "L'", "L2", "R", "R'", "R2"};
+
+/**
+ * Function that returns a random scramble
+ * */
+std::vector<std::string> getRandomShuffel(size_t n);
 
 /**
  * MANIPULATION_TO_INT contains all allowed manipulations and there
