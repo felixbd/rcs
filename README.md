@@ -96,3 +96,16 @@ yellow (Bottom face, nr. 6)\\
 -->
 
 ----------
+
+
+<!--
+
+### Stats
+
+gitstats . gitstats-out
+
+cloc . > repo-cloc.txt
+
+tree . > repo-tree.txt
+
+-->

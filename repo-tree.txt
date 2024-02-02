@@ -1,0 +1,41 @@
+.
+├── cpp
+│   ├── main.cc
+│   ├── Makefile
+│   ├── README.md
+│   ├── rubiks-cube.cc
+│   ├── rubiks-cube.hh
+│   └── rubiks-cube-test.cc
+├── docs
+│   └── cube.png
+├── LICENSE
+├── py
+│   ├── cube.py
+│   ├── main.py
+│   ├── README.md
+│   └── requirements.txt
+├── rcs-hs
+│   ├── app
+│   │   └── Main.hs
+│   ├── CHANGELOG.md
+│   ├── LICENSE
+│   ├── package.yaml
+│   ├── rcs-hs.cabal
+│   ├── README.md
+│   ├── Setup.hs
+│   ├── src
+│   │   ├── Cube.hs
+│   │   └── Lib.hs
+│   ├── stack.yaml
+│   └── test
+│       └── Spec.hs
+├── rcs-rs
+│   ├── Cargo.lock
+│   ├── Cargo.toml
+│   └── src
+│       └── main.rs
+├── README.md
+├── repo-cloc.txt
+└── repo-tree.txt
+
+9 directories, 29 files
