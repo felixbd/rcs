@@ -1,6 +1,6 @@
 ##
-# rubiks cube solver using old pochman
-# (c) Felix Drees - GNU GENERAL PUBLIC LICENSE
+# rubik's cube solver using old pochman
+# (c) Felix Drees - GNU GENERAL PUBLIC LICENSE v2
 #
 # @file
 # @version 0.1
@@ -23,13 +23,14 @@ $(MAIN): $(OBJECTS)
 	$(CC) -c $^ -o $@ $(CFLAGS)
 
 test: $(TEST-OBJECTS)
-	$(CC) $^ -l gtest -l pthread -o test.o
-	./test.o
+	$(CC) $^ -l gtest -l pthread -o run-test.o $(LDFLAGS)
+	./run-test.o
 
-# install `cpplint` via `pip3`:
-#  `pip3 install cpplint`
+format:
+	clang-format -i -style=llvm $(MAIN)
+
 checkstyle:
-	cpplint --repository=. *.cc *.hh
+	cpplint --linelength=80 --repository=. *.cc *.hh
 
 run:
 	./$(MAIN)
