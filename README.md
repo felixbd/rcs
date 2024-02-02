@@ -19,8 +19,8 @@ This repository contains multiple implementations of a Rubik’s Cube solver. Th
 
 - [x] [Python3](./py/)
 - [ ] [C++](./cpp/)
-- [ ] [Haskell](./hs/)
-- [ ] [Rust](./rs/)
+- [ ] [Haskell](./hs/)  <!-- stack new rcs-hs --resolver ghc-9.2.8 -p 'category: "Rubik’s Cube Solver"' -->
+- [ ] [Rust](./rs/)     <!-- cargo new rcs-rs -->
 
 <!-- no i will not add a java implementation!!! -->
 

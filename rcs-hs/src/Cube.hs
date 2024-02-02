@@ -2,7 +2,7 @@
 This module contains the Cube class.
 It is used to represent a Rubik's Cube and supports manipulation of the cube.
 
-Copyright (C) 2023-now  Felix D.
+Copyright Felix Drees (C) 2024 
 Created by felix on 30.03.2023 (%d.%m.%Y)
 
 This program is free software; you can redistribute it and/or modify
