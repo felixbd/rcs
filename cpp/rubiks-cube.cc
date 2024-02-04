@@ -3,9 +3,11 @@
 //
 
 #include <array>
-#include <iostream>
+// #include <iostream>
 #include <map>
-#include <vector>
+// #include <vector>
+// #include <iostream>
+#include <sstream>
 // #include <string>
 // #include <stdexcept>
 
@@ -49,6 +51,17 @@ std::vector<std::string> getRandomShuffel(size_t n) {
   }
 
   return randomElements;
+}
+
+// ____________________________________________________________________________
+std::vector<std::string>* rcsSplitString(std::string str) {
+   std::vector<std::string> *tokens = new std::vector<std::string>();
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (std::getline(tokenStream, token, ' ')) {
+        tokens->push_back(token);
+    }
+    return tokens;
 }
 
 // ____________________________________________________________________________

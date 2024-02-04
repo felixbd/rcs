@@ -5,7 +5,7 @@
 The following code is a part of the Rubik's Cube Solver project.
 It uses the cube.py file to create a cube object and solve it using the old pochmann method.
 
-Copyright (C) 2021-now  Felix D.
+Copyright (C) 2021  Felix D.
 Created by felix on 09.03.2021 (%d.%m.%Y)
 
 This program is free software; you can redistribute it and/or modify
