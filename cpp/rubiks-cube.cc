@@ -2,14 +2,13 @@
 // Created by felix on 12.10.2022 (dd.mm.yyyy)
 //
 
+#include <algorithm>
 #include <array>
-// #include <iostream>
+#include <cmath>
+#include <iostream>
 #include <map>
-// #include <vector>
-// #include <iostream>
 #include <sstream>
-// #include <string>
-// #include <stdexcept>
+#include <vector>
 
 #include "./rubiks-cube.hh"
 
@@ -54,14 +53,14 @@ std::vector<std::string> getRandomShuffel(size_t n) {
 }
 
 // ____________________________________________________________________________
-std::vector<std::string>* rcsSplitString(std::string str) {
-   std::vector<std::string> *tokens = new std::vector<std::string>();
-    std::string token;
-    std::istringstream tokenStream(str);
-    while (std::getline(tokenStream, token, ' ')) {
-        tokens->push_back(token);
-    }
-    return tokens;
+std::vector<std::string> *rcsSplitString(std::string str) {
+  std::vector<std::string> *tokens = new std::vector<std::string>();
+  std::string token;
+  std::istringstream tokenStream(str);
+  while (std::getline(tokenStream, token, ' ')) {
+    tokens->push_back(token);
+  }
+  return tokens;
 }
 
 // ____________________________________________________________________________
@@ -132,6 +131,85 @@ bool operator==(Cube a, Cube b) {
     }
   }
   return true;
+}
+
+// ____________________________________________________________________________
+char Cube::findNotSolvedCenter() {
+  for (int i = 0; i < 6; i++) {
+    char colorOfFace = this->board[i][1][1];
+
+    // check if each centerpice of the current facee is at its correct location
+    if (this->board[i][0][1] != colorOfFace) {
+      if (INDEX_2_NAME_CENTER.at(std::make_tuple(i, 0, 1)) != 'm') {
+        return INDEX_2_NAME_CENTER.at(std::make_tuple(i, 0, 1));
+      }
+    }
+
+    if (this->board[i][1][0] != colorOfFace) {
+      return INDEX_2_NAME_CENTER.at(std::make_tuple(i, 1, 0));
+    }
+
+    if (this->board[i][1][2] != colorOfFace) {
+      if (INDEX_2_NAME_CENTER.at(std::make_tuple(i, 1, 2)) != 'b') {
+        return INDEX_2_NAME_CENTER.at(std::make_tuple(i, 1, 2));
+      }
+    }
+
+    if (this->board[i][2][1] != colorOfFace) {
+      return INDEX_2_NAME_CENTER.at(std::make_tuple(i, 2, 1));
+    }
+  }
+
+  return '#';
+}
+
+// ____________________________________________________________________________
+void Cube::moveCurrentBuffer2targetLocation(std::vector<char> *moves) {
+  char bufferLetter = NAME_OF_BUFFER_PIECES_CENTER.at(
+      std::make_tuple(this->board[0][1][2], this->board[3][0][1]));
+
+  if (bufferLetter == 'b' || bufferLetter == 'm') {
+    char newBuffer = findNotSolvedCenter();
+
+    if (newBuffer != '#') {
+      bufferLetter = newBuffer;
+    } else {
+      return;
+    }
+  }
+
+  moves->reserve(1);
+  moves->push_back(bufferLetter);
+
+  std::string move =
+      MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER.at(bufferLetter);
+
+  std::vector<std::string> temp = {move};
+  this->manipulation(temp);
+}
+
+// ____________________________________________________________________________
+std::vector<std::string> Cube::findNotSolvedCorners() {
+  std::vector<std::string> rv;
+
+  /*
+return ["BCDFGHIJKLMNOPRSTUVWX"[i]
+                for (i, (a, b, c))
+                in zip(range(21),
+                       [(i, j, k)
+                        for i in range(6)
+                        for j, k in ([(0, 2), (2, 2), (2, 0)]
+                                     if i in [0,1,4] else
+                                     [(0, 0), (0, 2),
+                                          *(lambda t: t if i < 5 else
+t[::-1])([(2, 0), (2, 2)])
+                                     ])
+                       ])
+                if cube.board[a][b][c] != 'wrbogy'[a]
+            ]
+  */
+
+  return rv;
 }
 
 // ____________________________________________________________________________

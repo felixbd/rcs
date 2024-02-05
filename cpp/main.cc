@@ -6,19 +6,21 @@
 #include <iostream>
 #include <numeric>
 #include <vector>
-// #include <string>
 
 #include "./rubiks-cube.hh"
 
 int main() {
   // create a cube obj
   rubikscube::Cube myCube = rubikscube::Cube();
-  std::vector<std::string> randomShuffel = rubikscube::getRandomShuffel(5);
+  std::vector<std::string> randomShuffel = rubikscube::getRandomShuffel(10);
   myCube.manipulation(randomShuffel);
 
   std::cout << "Cube after applying ->"
-            << std::accumulate(randomShuffel.begin(), randomShuffel.end(),
-                               std::string(""))
+            << std::accumulate(randomShuffel.begin() + 1, randomShuffel.end(),
+                               randomShuffel[0],
+                               [](const std::string &a, const std::string &b) {
+                                 return a + " " + b;
+                               })
             << "<-" << std::endl
             << "results in:" << std::endl
             << myCube << std::endl;
@@ -26,7 +28,7 @@ int main() {
   rubikscube::Cube abc = rubikscube::Cube();
 
   // printing out the current element at a given point
-  std::cout << "the element at (4,2,1) is: " << abc.getBoardElement(2, 1, 0)
+  std::cout << "the element at (4,2,1) is: " << abc.getBoardElement(3, 1, 0)
             << std::endl;
 
   // printing all elements

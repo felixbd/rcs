@@ -8,17 +8,13 @@
 #ifndef RUBIKS_CUBE_HH_
 #define RUBIKS_CUBE_HH_
 
-// #include <iostream>
-#include <sstream>
-// #include <vector>
 #include <array>
-// #include <iostream>
+#include <iostream>
 #include <map>
 #include <random>
+#include <sstream>
 #include <string>
-// #include <vector>
 #include <tuple>
-#include <iostream>
 #include <vector>
 
 namespace rubikscube {
@@ -76,30 +72,42 @@ const std::map<std::tuple<char, char>, char> NAME_OF_BUFFER_PIECES_CENTER = {
  * Translate color code of corner pieces to unique (old pochmann) letter
  * You should read the color of the corner piece from the top, left to back side
  * */
-const std::map<std::tuple<char, char, char>, char> NAME_OF_BUFFER_PIECES_CORNER = {
-    {{'w', 'r', 'g'}, 'A'}, {{'r', 'g', 'w'}, 'E'}, {{'g', 'w', 'r'}, 'Q'},
-    {{'w', 'g', 'o'}, 'B'}, {{'o', 'w', 'g'}, 'N'}, {{'g', 'o', 'w'}, 'R'},
-    {{'w', 'o', 'b'}, 'C'}, {{'b', 'w', 'o'}, 'J'}, {{'o', 'b', 'w'}, 'M'},
-    {{'w', 'b', 'r'}, 'D'}, {{'r', 'w', 'b'}, 'F'}, {{'b', 'r', 'w'}, 'I'},
-    {{'r', 'y', 'g'}, 'H'}, {{'g', 'r', 'y'}, 'T'}, {{'y', 'g', 'r'}, 'X'},
-    {{'o', 'g', 'y'}, 'O'}, {{'g', 'y', 'o'}, 'S'}, {{'y', 'o', 'g'}, 'W'},
-    {{'b', 'o', 'y'}, 'K'}, {{'o', 'y', 'b'}, 'P'}, {{'y', 'b', 'o'}, 'V'},
-    {{'r', 'b', 'y'}, 'G'}, {{'b', 'y', 'r'}, 'L'}, {{'y', 'r', 'b'}, 'U'}};
+const std::map<std::tuple<char, char, char>, char>
+    NAME_OF_BUFFER_PIECES_CORNER = {
+        {{'w', 'r', 'g'}, 'A'}, {{'r', 'g', 'w'}, 'E'}, {{'g', 'w', 'r'}, 'Q'},
+        {{'w', 'g', 'o'}, 'B'}, {{'o', 'w', 'g'}, 'N'}, {{'g', 'o', 'w'}, 'R'},
+        {{'w', 'o', 'b'}, 'C'}, {{'b', 'w', 'o'}, 'J'}, {{'o', 'b', 'w'}, 'M'},
+        {{'w', 'b', 'r'}, 'D'}, {{'r', 'w', 'b'}, 'F'}, {{'b', 'r', 'w'}, 'I'},
+        {{'r', 'y', 'g'}, 'H'}, {{'g', 'r', 'y'}, 'T'}, {{'y', 'g', 'r'}, 'X'},
+        {{'o', 'g', 'y'}, 'O'}, {{'g', 'y', 'o'}, 'S'}, {{'y', 'o', 'g'}, 'W'},
+        {{'b', 'o', 'y'}, 'K'}, {{'o', 'y', 'b'}, 'P'}, {{'y', 'b', 'o'}, 'V'},
+        {{'r', 'b', 'y'}, 'G'}, {{'b', 'y', 'r'}, 'L'}, {{'y', 'r', 'b'}, 'U'}};
 
 /**
  * PERMS USED:
- * I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R' U' R' F R (F')
- * II.  | R-Perm   / Parity                |  => R U' R' U' R U R D R' U' R D' R' U2 R' U'
- * III. | T-Perm   / Kanten-Algorithmus 1  |  => R U R' U' R' F R2 U' R' U' R U R' F'
- * IV.  | J-Perm a / Kanten-Algorithmus 2  |  => R U R' F' R U R' U' R' F R2 U' R' U'
- * V.   | J-Perm b / Kanten-Algorithmus 3  |  => U' R' U L' U2 R U' R' U2 L R
+ * I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R'
+ * U' R' F R (F') II.  | R-Perm   / Parity                |  => R U' R' U' R U R
+ * D R' U' R D' R' U2 R' U' III. | T-Perm   / Kanten-Algorithmus 1  |  => R U R'
+ * U' R' F R2 U' R' U' R U R' F' IV.  | J-Perm a / Kanten-Algorithmus 2  |  => R
+ * U R' F' R U R' U' R' F R2 U' R' U' V.   | J-Perm b / Kanten-Algorithmus 3  |
+ * => U' R' U L' U2 R U' R' U2 L R
  */
 /*
-const std::vector<std::string> Y_PERM = {"F", "R", "U'", "R'", "U'", "R", "U", "R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R", "F'"};
-const std::vector<std::string> R_PERM = {"R", "U'", "R'", "U'", "R", "U", "R", "D", "R'", "U'", "R", "D'", "R'", "U2", "R'", "U'"};  // Parity Fixing algorithm
-const std::vector<std::string> T_PERM = {"R", "U", "R'", "U'", "R'", "F", "R2", "U'", "R'", "U'", "R", "U", "R'", "F'"};
-const std::vector<std::string> J_PERM_DOWN = {"R", "U", "R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R2", "U'", "R'", "U'"};
-const std::vector<std::string> J_PERM_UP = {"U'", "R'", "U", "L'", "U2", "R", "U'", "R'", "U2", "L", "R"};
+const std::vector<std::string> Y_PERM = {"F", "R", "U'", "R'", "U'", "R", "U",
+"R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R", "F'"};
+
+const std::vector<std::string> R_PERM = {"R", "U'", "R'", "U'", "R", "U", "R",
+"D", "R'", "U'", "R", "D'", "R'", "U2", "R'", "U'"};  // Parity Fixing algorithm
+
+const std::vector<std::string> T_PERM = {"R", "U", "R'", "U'", "R'", "F", "R2",
+"U'", "R'", "U'", "R", "U", "R'", "F'"};
+
+const std::vector<std::string>
+J_PERM_DOWN = {"R", "U", "R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R2",
+"U'", "R'", "U'"};
+
+const std::vector<std::string> J_PERM_UP = {"U'", "R'", "U",
+"L'", "U2", "R", "U'", "R'", "U2", "L", "R"};
 */
 
 // TODO maybe use `const char ABC[] = "...";`
@@ -109,46 +117,49 @@ const std::string T_PERM = "R U R' U' R' F R2 U' R' U' R U R' F'";
 const std::string J_PERM_DOWN = "R U R' F' R U R' U' R' F R2 U' R' U'";
 const std::string J_PERM_UP = "U' R' U L' U2 R U' R' U2 L R";
 
-
 /**
  * Permutation used to swap the current buffer piece with the correct one
  * */
-const std::map<char, std::string> MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER = {
-            {'a', J_PERM_UP},
-            // {'b', ""},  // buffer piece is already in the correct position but not oriented
-            {'c', J_PERM_DOWN},
-            {'d', T_PERM},
-            {'e', "R L F R' " + J_PERM_DOWN + " R F' L' R'"},
-            {'f', "R F R' " + J_PERM_DOWN + " R F' R'"},
-            {'g', "L' R F R' " + J_PERM_DOWN + " R F' R' L"},
-            {'h', "U B' U' " + T_PERM + " U B U'"},
-            {'i', "R2 U' R' F' R' " + J_PERM_DOWN + " R F R U R2"},
-            {'j', "U2 R U2 " + T_PERM + " U2 R' U2"},
-            {'k', "R F R' L' " + T_PERM + " L R F' R'"},
-            {'l', "L' " + T_PERM + " L"},
-            // {'m', ""},  // buffer piece is already in the correct position but not oriented
-            {'n', "U B U' " + T_PERM + " U B' U'"},
-            {'o', "D' R F R' L' " + T_PERM + " L R F' R' D"},
-            {'p', "U' F' U " + T_PERM + " U' F U"},
-            {'q', "R2 U R' F' R' " + J_PERM_DOWN + " R F R U' R2"},
-            {'r', "U2 R' U2 " + T_PERM + " U2 R U2"},
-            {'s', "D L R' B' R " + J_PERM_UP + " R' B L' R D'"},
-            {'t', "L " + T_PERM + " L'"},
-            {'u', "R F2 R' " + J_PERM_DOWN + " R F2 R'"},
-            {'v', "D' R F2 R' " + J_PERM_DOWN + " R F2 R' D"},
-            {'w', "R' B2 R " + J_PERM_UP + " R' B2 R"},
-            {'x', "D R F2 R' " + J_PERM_DOWN + " R F2 R' D"}
-};
+const std::map<char, std::string> MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER =
+    {{'a', J_PERM_UP},
+     // {'b', ""},  // buffer piece is already in the correct position but not
+     // oriented
+     {'c', J_PERM_DOWN},
+     {'d', T_PERM},
+     {'e', "R L F R' " + J_PERM_DOWN + " R F' L' R'"},
+     {'f', "R F R' " + J_PERM_DOWN + " R F' R'"},
+     {'g', "L' R F R' " + J_PERM_DOWN + " R F' R' L"},
+     {'h', "U B' U' " + T_PERM + " U B U'"},
+     {'i', "R2 U' R' F' R' " + J_PERM_DOWN + " R F R U R2"},
+     {'j', "U2 R U2 " + T_PERM + " U2 R' U2"},
+     {'k', "R F R' L' " + T_PERM + " L R F' R'"},
+     {'l', "L' " + T_PERM + " L"},
+     // {'m', ""},  // buffer piece is already in the correct position but not
+     // oriented
+     {'n', "U B U' " + T_PERM + " U B' U'"},
+     {'o', "D' R F R' L' " + T_PERM + " L R F' R' D"},
+     {'p', "U' F' U " + T_PERM + " U' F U"},
+     {'q', "R2 U R' F' R' " + J_PERM_DOWN + " R F R U' R2"},
+     {'r', "U2 R' U2 " + T_PERM + " U2 R U2"},
+     {'s', "D L R' B' R " + J_PERM_UP + " R' B L' R D'"},
+     {'t', "L " + T_PERM + " L'"},
+     {'u', "R F2 R' " + J_PERM_DOWN + " R F2 R'"},
+     {'v', "D' R F2 R' " + J_PERM_DOWN + " R F2 R' D"},
+     {'w', "R' B2 R " + J_PERM_UP + " R' B2 R"},
+     {'x', "D R F2 R' " + J_PERM_DOWN + " R F2 R' D"}};
 
 /**
  * Translate current buffer piece letter to solving algorithm
  * */
-const std::map<char, std::string> MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER = {
-        // {'A', ""},  // buffer piece is already in the correct position but not oriented
+const std::map<char, std::string> MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER =
+    {
+        // {'A', ""},  // buffer piece is already in the correct position but
+        // not oriented
         {'B', "U " + J_PERM_UP + " U'"},
         {'C', Y_PERM},
         {'D', "U2 " + J_PERM_DOWN + " U2"},
-        // {'E', ""},  // buffer piece is already in the correct position but not oriented
+        // {'E', ""},  // buffer piece is already in the correct position but
+        // not oriented
         {'F', "F " + Y_PERM + " F'"},
         {'G', "D R " + Y_PERM + " R' D'"},
         {'H', "D2 F' " + Y_PERM + " F D2"},
@@ -160,15 +171,15 @@ const std::map<char, std::string> MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER = 
         {'N', "R' F' U2 " + J_PERM_DOWN + " U2 F R"},
         {'O', "D' R " + Y_PERM + " R' D"},
         {'P', "F' " + Y_PERM + " F"},
-        // {'Q', ""},  // buffer piece is already in the correct position but not oriented
+        // {'Q', ""},  // buffer piece is already in the correct position but
+        // not oriented
         {'R', "R' " + Y_PERM + " R"},
         {'S', "D' F' " + Y_PERM + " F D"},
         {'T', "D2 R " + Y_PERM + " R' D2"},
         {'U', "F2 " + Y_PERM + " F2"},
         {'V', "D' F2 " + Y_PERM + " F2 D"},
         {'W', "R2 " + Y_PERM + " R2"},
-        {'X', "D' F2 " + Y_PERM + " F2 D"}
-};
+        {'X', "D' F2 " + Y_PERM + " F2 D"}};
 
 /**
  * A array of all possible moves.
@@ -192,7 +203,7 @@ const std::map<char, int> MANIPULATION_TO_INT = {{'F', 0}, {'B', 1}, {'U', 2},
 /**
  * Splits a string on spaces.
  * */
-std::vector<std::string>* rcsSplitString(std::string str);
+std::vector<std::string> *rcsSplitString(std::string str);
 
 /**
  * A class that represents a Rubik's Cube.
@@ -236,6 +247,23 @@ public:
    * For mor information about the notation refer to the README.md
    * */
   void manipulation(std::vector<std::string> const &instructions);
+
+  /**
+   * Finds the first not solved center piece name
+   * if tere is none it will return '#'
+   * */
+  char findNotSolvedCenter();
+
+  /**
+   * Move the current center bufer pice to its target location
+   * */
+  void moveCurrentBuffer2targetLocation(std::vector<char> *moves);
+
+  /**
+   * Returns a list of names of unsolved corner pieces
+   * if there is none return the empty list
+   * */
+  std::vector<std::string> findNotSolvedCorners();
 
   /**
    * Atomic cube manipulations.
