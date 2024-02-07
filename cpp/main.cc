@@ -12,6 +12,8 @@
 int main() {
   // create a cube obj
   rubikscube::Cube myCube = rubikscube::Cube();
+
+  // get scramble and apply it
   std::vector<std::string> randomShuffel = rubikscube::getRandomShuffel(10);
   myCube.manipulation(randomShuffel);
 
@@ -24,6 +26,25 @@ int main() {
             << "<-" << std::endl
             << "results in:" << std::endl
             << myCube << std::endl;
+
+  // solve all center pieses
+  std::vector<char> solutionMoves;
+  // myCube.moveCenterBuffer2targetLocation(&solutionMoves);
+
+  // check for parity
+  // if the numebr of moves is odd, applie the parity fixing algorithm
+  // (apply the R_PERM)
+  if (solutionMoves.size() != 0 && solutionMoves.size() % 2 != 0) {
+    // TODO myCube.translate(R PERM); and split R Perm into vect ...
+    solutionMoves.push_back('#'); // indicate parity fix ...
+  }
+
+  // solve all corner pieces
+  // myCube.moveCornerBuffer2TargetLocation(&solutionMoves);
+
+  // DONE!!! myCube should be solved now ...
+
+  // ===========================================================================
 
   rubikscube::Cube abc = rubikscube::Cube();
 

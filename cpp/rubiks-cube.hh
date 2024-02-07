@@ -83,34 +83,17 @@ const std::map<std::tuple<char, char, char>, char>
         {{'b', 'o', 'y'}, 'K'}, {{'o', 'y', 'b'}, 'P'}, {{'y', 'b', 'o'}, 'V'},
         {{'r', 'b', 'y'}, 'G'}, {{'b', 'y', 'r'}, 'L'}, {{'y', 'r', 'b'}, 'U'}};
 
+// clang-format off
 /**
  * PERMS USED:
- * I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R'
- * U' R' F R (F') II.  | R-Perm   / Parity                |  => R U' R' U' R U R
- * D R' U' R D' R' U2 R' U' III. | T-Perm   / Kanten-Algorithmus 1  |  => R U R'
- * U' R' F R2 U' R' U' R U R' F' IV.  | J-Perm a / Kanten-Algorithmus 2  |  => R
- * U R' F' R U R' U' R' F R2 U' R' U' V.   | J-Perm b / Kanten-Algorithmus 3  |
- * => U' R' U L' U2 R U' R' U2 L R
+ * I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R' U' R' F R (F')
+ * II.  | R-Perm   / Parity                |  => R U' R' U' R U R D R' U' R D' R' U2 R' U'
+ * III. | T-Perm   / Kanten-Algorithmus 1  |  => R U R' U' R' F R2 U' R' U' R U R' F'
+ * IV.  | J-Perm a / Kanten-Algorithmus 2  |  => R U R' F' R U R' U' R' F R2 U' R' U'
+ * V.   | J-Perm b / Kanten-Algorithmus 3  |  => U' R' U L' U2 R U' R' U2 L R
  */
-/*
-const std::vector<std::string> Y_PERM = {"F", "R", "U'", "R'", "U'", "R", "U",
-"R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R", "F'"};
+// clang-format on
 
-const std::vector<std::string> R_PERM = {"R", "U'", "R'", "U'", "R", "U", "R",
-"D", "R'", "U'", "R", "D'", "R'", "U2", "R'", "U'"};  // Parity Fixing algorithm
-
-const std::vector<std::string> T_PERM = {"R", "U", "R'", "U'", "R'", "F", "R2",
-"U'", "R'", "U'", "R", "U", "R'", "F'"};
-
-const std::vector<std::string>
-J_PERM_DOWN = {"R", "U", "R'", "F'", "R", "U", "R'", "U'", "R'", "F", "R2",
-"U'", "R'", "U'"};
-
-const std::vector<std::string> J_PERM_UP = {"U'", "R'", "U",
-"L'", "U2", "R", "U'", "R'", "U2", "L", "R"};
-*/
-
-// TODO maybe use `const char ABC[] = "...";`
 const std::string Y_PERM = "F R U' R' U' R U R' F' R U R' U' R' F R F'";
 const std::string R_PERM = "R U' R' U' R U R D R' U' R D' R' U2 R' U'";
 const std::string T_PERM = "R U R' U' R' F R2 U' R' U' R U R' F'";
@@ -222,11 +205,6 @@ public:
   ~Cube();
 
   /**
-   * Returns a ptr to the current board.
-   * */
-  // BOARD* getBoard();
-
-  /**
    * Return the selected Face of the Cube.
    * */
   FACE getFace(int a);
@@ -235,7 +213,7 @@ public:
    * Update the current board.
    * TODO(me) how to check if a given board is solvable and valid
    * */
-  // void setBoard(int* pBoard);
+  // void setBoard(BOARD* pBoard);
 
   /**
    * Get the element at a given index (x, y, z)
@@ -268,7 +246,7 @@ public:
   /**
    * Moves the current corner buffer to its target location
    */
-  void moveCornerBufferToTargetLocation();
+  void moveCornerBuffer2TargetLocation(std::vector<char> *moves);
 
   /**
    * Atomic cube manipulations.

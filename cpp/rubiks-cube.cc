@@ -7,6 +7,7 @@
 #include <cmath>
 #include <iostream>
 #include <map>
+#include <random>
 #include <sstream>
 #include <vector>
 
@@ -169,7 +170,7 @@ void Cube::moveCenterBuffer2targetLocation(std::vector<char> *moves) {
       std::make_tuple(this->board[0][1][2], this->board[3][0][1]));
 
   if (bufferLetter == 'b' || bufferLetter == 'm') {
-    char newBuffer = findNotSolvedCenter();
+    char newBuffer = this->findNotSolvedCenter();
 
     if (newBuffer != '#') {
       bufferLetter = newBuffer;
@@ -184,8 +185,12 @@ void Cube::moveCenterBuffer2targetLocation(std::vector<char> *moves) {
   std::string move =
       MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER.at(bufferLetter);
 
-  std::vector<std::string> temp = {move};
+  std::vector<std::string> temp = {
+      move}; // TODO: split move on space and write to vect
   this->manipulation(temp);
+
+  // solve the remaining center stones recursivly
+  this->moveCenterBuffer2targetLocation(moves);
 }
 
 // ____________________________________________________________________________
@@ -216,46 +221,49 @@ std::vector<char> Cube::findNotSolvedCorners() {
 }
 
 // ____________________________________________________________________________
-void Cube::moveCornerBufferToTargetLocation() {
+void Cube::moveCornerBuffer2TargetLocation(std::vector<char> *moves) {
+  char bufferLetter = NAME_OF_BUFFER_PIECES_CORNER.at(std::make_tuple(
+      this->board[0][0][0], this->board[1][0][0], this->board[4][0][0]));
 
-  // TODO hier weiter machen ...
+  // clang-format off
+/*
+  TODO:
+  # DO NOT REMOVE THIS
+  #  if you remove this, the algorithm will not terminate in approximately 15% of the cases
+  #  I have no idea why this is the case, should work without, but apparently it doesn't
+  if len(moves) > 10:  # the threshold is totally arbitrary
+      if set(moves[-4:]) == {'X', 'V'}:  # if the last 4 moves are X and V we entert a bad recursion
+          new_buffer = find_not_solved_corners()
+          if len(new_buffer) > 0:
+              rm.shuffle(new_buffer)
+              buffer = new_buffer[0]
+*/
+  // clang-format on
 
-  /*
-          buffer = NAME_OF_BUFFER_PIECES_CORNER[
-              (cube.board[0][0][0], cube.board[1][0][0], cube.board[4][0][0])
-          ]
+  // if the current buffer stone is also the correct stone for the buffer
+  //  ignore it and find not folved corner stones to solve next ...
+  if (bufferLetter == 'A' || bufferLetter == 'E' || bufferLetter == 'Q') {
+    std::vector<char> unsolvedCorners = this->findNotSolvedCorners();
+    if (static_cast<int>(unsolvedCorners.size()) == 0) {
+      // all corner stones are solved
+      return;
+    }
+    // shuffle the unsolved stone vector
+    std::default_random_engine e(42);
+    std::shuffle(unsolvedCorners.begin(), unsolvedCorners.end(), e);
+    bufferLetter = unsolvedCorners[0];
+  }
 
-          # DO NOT REMOVE THIS
-          #  if you remove this, the algorithm will not terminate in
-   approximately 15% of the cases #  I have no idea why this is the case, should
-   work without, but apparently it doesn't if len(moves) > 10:  # the threshold
-   is totally arbitrary if set(moves[-4:]) == {'X', 'V'}:  # if the last 4 moves
-   are X and V we entert a bad recursion new_buffer = find_not_solved_corners()
-   if len(new_buffer) > 0: rm.shuffle(new_buffer) buffer = new_buffer[0]
+  moves->push_back(bufferLetter);
 
-          # if the current buffer pieces is also the correct pieces for the
-   buffer #  ignore the current buffer pieces and search for another not solved
-   corner pieces if buffer in "AEQ": new_buffer = find_not_solved_corners() if
-   len(new_buffer) > 0: # there is still a not solved corner pieces
-                  rm.shuffle(new_buffer)
-                  buffer = new_buffer[0]
-              else:
-                  # all corner pieces are solved
-                  return
+  std::string move =
+      MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER.at(bufferLetter);
 
-          moves.append(buffer)
-          move = normalize_instructions(
-              MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER[buffer]
-          )
-          cube.translate(move)
+  std::vector<std::string> temp = {move}; // TODO: split move on space
+  this->manipulation(temp);
 
-          # enter recursion as long as there are still not solved corner pieces
-          move_corner_buffer_to_target_location()
-
-  */
-
-  // enter recursion as long as there are still not solved corner pieces
-  // Cube::moveCornerBufferToTargetLocation();
+  // solve the remaining center stones recursivly
+  this->moveCornerBuffer2TargetLocation(moves);
 }
 
 // ____________________________________________________________________________
