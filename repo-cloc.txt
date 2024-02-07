@@ -1,21 +1,22 @@
-      45 text files.
-classified 29 files      29 unique files.                              
-      56 files ignored.
+      50 text files.
+classified 33 files      33 unique files.                              
+      57 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.02 s (1615.6 files/s, 142729.3 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.02 s (1681.7 files/s, 150537.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                              3            119             93            390
-C/C++ Header                     4             37            103            355
+C++                              3            146            129            456
+C/C++ Header                     4             54            170            438
 Python                           2            106            195            343
 Haskell                          8             83             39            226
-Markdown                         5             70             37            117
+Markdown                         5             71             38            117
+XML                              4              0              0             93
 YAML                             2             13             64             49
-Text                             2              1              0             42
+Text                             2              1              0             43
 make                             1             11              8             23
 Rust                             1              5             17              8
 TOML                             1              2              1              5
 -------------------------------------------------------------------------------
-SUM:                            29            447            557           1558
+SUM:                            33            492            661           1801
 -------------------------------------------------------------------------------

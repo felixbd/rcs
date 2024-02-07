@@ -257,13 +257,18 @@ public:
   /**
    * Move the current center bufer pice to its target location
    * */
-  void moveCurrentBuffer2targetLocation(std::vector<char> *moves);
+  void moveCenterBuffer2targetLocation(std::vector<char> *moves);
 
   /**
    * Returns a list of names of unsolved corner pieces
    * if there is none return the empty list
    * */
-  std::vector<std::string> findNotSolvedCorners();
+  std::vector<char> findNotSolvedCorners();
+
+  /**
+   * Moves the current corner buffer to its target location
+   */
+  void moveCornerBufferToTargetLocation();
 
   /**
    * Atomic cube manipulations.

@@ -164,7 +164,7 @@ char Cube::findNotSolvedCenter() {
 }
 
 // ____________________________________________________________________________
-void Cube::moveCurrentBuffer2targetLocation(std::vector<char> *moves) {
+void Cube::moveCenterBuffer2targetLocation(std::vector<char> *moves) {
   char bufferLetter = NAME_OF_BUFFER_PIECES_CENTER.at(
       std::make_tuple(this->board[0][1][2], this->board[3][0][1]));
 
@@ -189,27 +189,73 @@ void Cube::moveCurrentBuffer2targetLocation(std::vector<char> *moves) {
 }
 
 // ____________________________________________________________________________
-std::vector<std::string> Cube::findNotSolvedCorners() {
-  std::vector<std::string> rv;
+std::vector<char> Cube::findNotSolvedCorners() {
+  std::vector<char> rv;
 
-  /*
-return ["BCDFGHIJKLMNOPRSTUVWX"[i]
-                for (i, (a, b, c))
-                in zip(range(21),
-                       [(i, j, k)
-                        for i in range(6)
-                        for j, k in ([(0, 2), (2, 2), (2, 0)]
-                                     if i in [0,1,4] else
-                                     [(0, 0), (0, 2),
-                                          *(lambda t: t if i < 5 else
-t[::-1])([(2, 0), (2, 2)])
-                                     ])
-                       ])
-                if cube.board[a][b][c] != 'wrbogy'[a]
-            ]
-  */
+  std::vector<std::tuple<int, int, int>> positions = {
+      {0, 0, 2}, {0, 2, 2}, {0, 2, 0},            // TOP Face
+      {1, 0, 2}, {1, 2, 2}, {1, 2, 0},            // LEFT Face
+      {2, 0, 0}, {2, 0, 2}, {2, 2, 0}, {2, 2, 2}, // FRONT Face
+      {3, 0, 0}, {3, 0, 2}, {3, 2, 0}, {3, 2, 2}, // RIGHT Face
+      {4, 0, 2}, {4, 2, 2}, {4, 2, 0},            // BACK Face
+      {5, 0, 0}, {5, 0, 2}, {5, 2, 2}, {5, 2, 0}  // BOTTOM Face
+  };
+
+  char cornerNames[] = "BCDFGHIJKLMNOPRSTUVWX";
+  std::string colors = "wrbogy";
+
+  for (int i = 0; i < 21; i++) {
+    int a, b, c;
+    std::tie(a, b, c) = positions[i];
+    if (this->board[a][b][c] != colors[a]) {
+      rv.push_back(cornerNames[i]);
+    }
+  }
 
   return rv;
+}
+
+// ____________________________________________________________________________
+void Cube::moveCornerBufferToTargetLocation() {
+
+  // TODO hier weiter machen ...
+
+  /*
+          buffer = NAME_OF_BUFFER_PIECES_CORNER[
+              (cube.board[0][0][0], cube.board[1][0][0], cube.board[4][0][0])
+          ]
+
+          # DO NOT REMOVE THIS
+          #  if you remove this, the algorithm will not terminate in
+   approximately 15% of the cases #  I have no idea why this is the case, should
+   work without, but apparently it doesn't if len(moves) > 10:  # the threshold
+   is totally arbitrary if set(moves[-4:]) == {'X', 'V'}:  # if the last 4 moves
+   are X and V we entert a bad recursion new_buffer = find_not_solved_corners()
+   if len(new_buffer) > 0: rm.shuffle(new_buffer) buffer = new_buffer[0]
+
+          # if the current buffer pieces is also the correct pieces for the
+   buffer #  ignore the current buffer pieces and search for another not solved
+   corner pieces if buffer in "AEQ": new_buffer = find_not_solved_corners() if
+   len(new_buffer) > 0: # there is still a not solved corner pieces
+                  rm.shuffle(new_buffer)
+                  buffer = new_buffer[0]
+              else:
+                  # all corner pieces are solved
+                  return
+
+          moves.append(buffer)
+          move = normalize_instructions(
+              MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER[buffer]
+          )
+          cube.translate(move)
+
+          # enter recursion as long as there are still not solved corner pieces
+          move_corner_buffer_to_target_location()
+
+  */
+
+  // enter recursion as long as there are still not solved corner pieces
+  // Cube::moveCornerBufferToTargetLocation();
 }
 
 // ____________________________________________________________________________
@@ -237,29 +283,19 @@ void Cube::manipulation(std::vector<std::string> const &instructions) {
     num = (instruction.length() == 1) ? 1 : (instruction[1] == '2') ? 2 : 3;
     // perform manipulation (n times)
     for (int n = 0; n < num; n++) {
+      // clang-format off
       switch (MANIPULATION_TO_INT.at(instruction[0])) {
-      case 0:
-        front();
-        break;
-      case 1:
-        back();
-        break;
-      case 2:
-        up();
-        break;
-      case 3:
-        down();
-        break;
-      case 4:
-        left();
-        break;
-      case 5:
-        right();
-        break;
+      case 0: front(); break;
+      case 1: back();  break;
+      case 2: up();    break;
+      case 3: down();  break;
+      case 4: left();  break;
+      case 5: right(); break;
       default:
         std::cerr << "INVALID OP" << std::endl;
         break;
       }
+      // clang-format on
     }
   }
 }
