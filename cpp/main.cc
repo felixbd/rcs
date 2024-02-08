@@ -28,41 +28,60 @@ int main() {
             << myCube << std::endl;
 
   // solve all center pieses
-  std::vector<char> solutionMoves;
-  // myCube.moveCenterBuffer2targetLocation(&solutionMoves);
+  std::vector<std::string> solutionMoves;
+  myCube.moveCenterBuffer2targetLocation(&solutionMoves);
 
   // check for parity
   // if the numebr of moves is odd, applie the parity fixing algorithm
   // (apply the R_PERM)
   if (solutionMoves.size() != 0 && solutionMoves.size() % 2 != 0) {
-    // TODO myCube.translate(R PERM); and split R Perm into vect ...
-    solutionMoves.push_back('#'); // indicate parity fix ...
+    std::string move = rubikscube::R_PERM;
+
+    std::vector<std::string> tokens;
+    std::stringstream ss(move);
+    std::string token;
+
+    while (ss >> token) {
+      tokens.push_back(token);
+    }
+
+    myCube.manipulation(tokens);
+    solutionMoves.push_back(" - parity fix - ");
   }
 
   // solve all corner pieces
-  // myCube.moveCornerBuffer2TargetLocation(&solutionMoves);
+  myCube.moveCornerBuffer2targetLocation(&solutionMoves);
 
   // DONE!!! myCube should be solved now ...
+  std::cout << "\nsolution:\n" << std::endl;
+  for (const auto &str : solutionMoves) {
+    std::cout << str << " ";
+  }
+
+  std::cout << "\n\ncube:\n" << myCube << std::endl;
 
   // ===========================================================================
 
-  rubikscube::Cube abc = rubikscube::Cube();
+  /*
+    rubikscube::Cube abc = rubikscube::Cube();
 
-  // printing out the current element at a given point
-  std::cout << "the element at (4,2,1) is: " << abc.getBoardElement(3, 1, 0)
-            << std::endl;
+    // printing out the current element at a given point
+    std::cout << "the element at (4,2,1) is: " << abc.getBoardElement(3, 1, 0)
+              << std::endl;
 
-  // printing all elements
-  std::cout << "\nprinting the board:\n\n" << abc << std::endl;
+    // printing all elements
+    std::cout << "\nprinting the board:\n\n" << abc << std::endl;
 
-  // performing manipulations
-  std::cout << "performing manipulations: U B2 B'\n" << std::endl;
-  std::vector<std::string> testMan = {"U", "B2", "D'"};
-  // std::vector<std::string> testMan = {"F", "B2", "F'", "B2"};
-  abc.manipulation(testMan);
+    // performing manipulations
+    std::cout << "performing manipulations: U B2 B'\n" << std::endl;
+    std::vector<std::string> testMan = {"U", "B2", "D'"};
+    // std::vector<std::string> testMan = {"F", "B2", "F'", "B2"};
+    abc.manipulation(testMan);
 
-  // printing all elements
-  std::cout << "\nprinting the board:\n\n" << abc << std::endl;
+    // printing all elements
+    std::cout << "\nprinting the board:\n\n" << abc << std::endl;
 
-  return 0;
+  */
+
+  return EXIT_SUCCESS;
 }

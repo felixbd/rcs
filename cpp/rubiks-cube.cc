@@ -165,9 +165,9 @@ char Cube::findNotSolvedCenter() {
 }
 
 // ____________________________________________________________________________
-void Cube::moveCenterBuffer2targetLocation(std::vector<char> *moves) {
-  char bufferLetter = NAME_OF_BUFFER_PIECES_CENTER.at(
-      std::make_tuple(this->board[0][1][2], this->board[3][0][1]));
+void Cube::moveCenterBuffer2targetLocation(std::vector<std::string> *moves) {
+  char bufferLetter = NAME_OF_BUFFER_PIECES_CENTER.at(std::make_tuple(
+      COLORS[this->board[0][1][2]], COLORS[this->board[3][0][1]]));
 
   if (bufferLetter == 'b' || bufferLetter == 'm') {
     char newBuffer = this->findNotSolvedCenter();
@@ -179,15 +179,20 @@ void Cube::moveCenterBuffer2targetLocation(std::vector<char> *moves) {
     }
   }
 
-  moves->reserve(1);
-  moves->push_back(bufferLetter);
+  moves->push_back(std::string(1, bufferLetter));
 
   std::string move =
       MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER.at(bufferLetter);
 
-  std::vector<std::string> temp = {
-      move}; // TODO: split move on space and write to vect
-  this->manipulation(temp);
+  std::vector<std::string> tokens;
+  std::stringstream ss(move);
+  std::string token;
+
+  while (ss >> token) {
+    tokens.push_back(token);
+  }
+
+  this->manipulation(tokens);
 
   // solve the remaining center stones recursivly
   this->moveCenterBuffer2targetLocation(moves);
@@ -221,9 +226,10 @@ std::vector<char> Cube::findNotSolvedCorners() {
 }
 
 // ____________________________________________________________________________
-void Cube::moveCornerBuffer2TargetLocation(std::vector<char> *moves) {
+void Cube::moveCornerBuffer2targetLocation(std::vector<std::string> *moves) {
   char bufferLetter = NAME_OF_BUFFER_PIECES_CORNER.at(std::make_tuple(
-      this->board[0][0][0], this->board[1][0][0], this->board[4][0][0]));
+      COLORS[this->board[0][0][0]], COLORS[this->board[1][0][0]],
+      COLORS[this->board[4][0][0]]));
 
   // clang-format off
 /*
@@ -238,32 +244,46 @@ void Cube::moveCornerBuffer2TargetLocation(std::vector<char> *moves) {
               rm.shuffle(new_buffer)
               buffer = new_buffer[0]
 */
+
   // clang-format on
+
+  std::vector<char> unsolvedCorners = this->findNotSolvedCorners();
+  if (static_cast<int>(unsolvedCorners.size()) == 0 ||
+      static_cast<int>(moves->size()) > 50) {
+    // all corner stones are solved
+    return;
+  }
+  // shuffle the unsolved stone vector
+  std::default_random_engine e(42);
+  std::random_device rd;
+  std::mt19937 g(rd());
+  std::shuffle(unsolvedCorners.begin(), unsolvedCorners.end(), g);
 
   // if the current buffer stone is also the correct stone for the buffer
   //  ignore it and find not folved corner stones to solve next ...
   if (bufferLetter == 'A' || bufferLetter == 'E' || bufferLetter == 'Q') {
-    std::vector<char> unsolvedCorners = this->findNotSolvedCorners();
-    if (static_cast<int>(unsolvedCorners.size()) == 0) {
-      // all corner stones are solved
-      return;
-    }
-    // shuffle the unsolved stone vector
-    std::default_random_engine e(42);
-    std::shuffle(unsolvedCorners.begin(), unsolvedCorners.end(), e);
     bufferLetter = unsolvedCorners[0];
   }
 
-  moves->push_back(bufferLetter);
+  std::cout << "[fucking debug print] " << bufferLetter << std::endl;
+
+  moves->push_back(std::string(1, bufferLetter));
 
   std::string move =
       MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CORNER.at(bufferLetter);
 
-  std::vector<std::string> temp = {move}; // TODO: split move on space
-  this->manipulation(temp);
+  std::vector<std::string> tokens;
+  std::stringstream ss(move);
+  std::string token;
+
+  while (ss >> token) {
+    tokens.push_back(token);
+  }
+
+  this->manipulation(tokens);
 
   // solve the remaining center stones recursivly
-  this->moveCornerBuffer2TargetLocation(moves);
+  this->moveCornerBuffer2targetLocation(moves);
 }
 
 // ____________________________________________________________________________

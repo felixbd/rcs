@@ -23,6 +23,8 @@ using ROW = std::array<int, 3>;
 using FACE = std::array<ROW, 3>;
 using BOARD = std::array<FACE, 6>;
 
+const char COLORS[] = "wrbogy";
+
 /**
  * Returns a string with all Values of the given Face of the Cube.
  * */
@@ -235,7 +237,7 @@ public:
   /**
    * Move the current center bufer pice to its target location
    * */
-  void moveCenterBuffer2targetLocation(std::vector<char> *moves);
+  void moveCenterBuffer2targetLocation(std::vector<std::string> *moves);
 
   /**
    * Returns a list of names of unsolved corner pieces
@@ -246,7 +248,7 @@ public:
   /**
    * Moves the current corner buffer to its target location
    */
-  void moveCornerBuffer2TargetLocation(std::vector<char> *moves);
+  void moveCornerBuffer2targetLocation(std::vector<std::string> *moves);
 
   /**
    * Atomic cube manipulations.
