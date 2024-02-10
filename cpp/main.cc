@@ -1,8 +1,9 @@
-// Copyright (C) 2022-now by Felix D | GNU GPLv2
+// Copyright (C) 2022-2024 by Felix D | GNU GPLv2
 // Created by felix on 12.10.2022 (dd.mm.yyyy)
 //
 
 #include <array>
+#include <chrono> // NOLINT [build/c++11]
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -10,6 +11,11 @@
 #include "./rubiks-cube.hh"
 
 int main() {
+  // measure time of function execution
+  std::chrono::high_resolution_clock::time_point start;
+  std::chrono::high_resolution_clock::time_point end;
+  std::chrono::duration<double> duration;
+
   // create a cube obj
   rubikscube::Cube myCube = rubikscube::Cube();
 
@@ -26,6 +32,9 @@ int main() {
             << "<-" << std::endl
             << "results in:" << std::endl
             << myCube << std::endl;
+
+  // Start time
+  start = std::chrono::high_resolution_clock::now();
 
   // solve all center pieses
   std::vector<std::string> solutionMoves;
@@ -51,6 +60,12 @@ int main() {
 
   // solve all corner pieces
   myCube.moveCornerBuffer2targetLocation(&solutionMoves);
+
+  // end time (cube is solved now ...)
+  end = std::chrono::high_resolution_clock::now();
+  duration = end - start;
+
+  std::cout << "total time: " << duration.count() << std::endl;
 
   // DONE!!! myCube should be solved now ...
   std::cout << "\nsolution:\n" << std::endl;

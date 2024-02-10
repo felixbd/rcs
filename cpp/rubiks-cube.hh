@@ -1,4 +1,4 @@
-// Copyright (C) 2022-now by Felix D | GNU GPLv2
+// Copyright (C) 2022-2024 by Felix D | GNU GPLv2
 // Created by felix on 12.10.2022 (dd.mm.yyyy)
 //
 

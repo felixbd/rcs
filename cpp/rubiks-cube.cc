@@ -1,4 +1,4 @@
-// Copyright (C) 2022-now by Felix D | GNU GPLv2
+// Copyright (C) 2022-2024 by Felix D | GNU GPLv2
 // Created by felix on 12.10.2022 (dd.mm.yyyy)
 //
 
@@ -212,12 +212,11 @@ std::vector<char> Cube::findNotSolvedCorners() {
   };
 
   char cornerNames[] = "BCDFGHIJKLMNOPRSTUVWX";
-  std::string colors = "wrbogy";
 
   for (int i = 0; i < 21; i++) {
     int a, b, c;
     std::tie(a, b, c) = positions[i];
-    if (this->board[a][b][c] != colors[a]) {
+    if (this->board[a][b][c] != a) {
       rv.push_back(cornerNames[i]);
     }
   }
@@ -227,45 +226,56 @@ std::vector<char> Cube::findNotSolvedCorners() {
 
 // ____________________________________________________________________________
 void Cube::moveCornerBuffer2targetLocation(std::vector<std::string> *moves) {
+  if (static_cast<int>(moves->size()) > 50) {
+    std::cerr << "[WARNING] Solution attempt aborted as a precaution, "
+              << "due to too many moves ..." << std::endl;
+    return;
+  }
+
   char bufferLetter = NAME_OF_BUFFER_PIECES_CORNER.at(std::make_tuple(
       COLORS[this->board[0][0][0]], COLORS[this->board[1][0][0]],
       COLORS[this->board[4][0][0]]));
 
-  // clang-format off
-/*
-  TODO:
-  # DO NOT REMOVE THIS
-  #  if you remove this, the algorithm will not terminate in approximately 15% of the cases
-  #  I have no idea why this is the case, should work without, but apparently it doesn't
-  if len(moves) > 10:  # the threshold is totally arbitrary
-      if set(moves[-4:]) == {'X', 'V'}:  # if the last 4 moves are X and V we entert a bad recursion
-          new_buffer = find_not_solved_corners()
-          if len(new_buffer) > 0:
-              rm.shuffle(new_buffer)
-              buffer = new_buffer[0]
-*/
-
-  // clang-format on
-
   std::vector<char> unsolvedCorners = this->findNotSolvedCorners();
-  if (static_cast<int>(unsolvedCorners.size()) == 0 ||
-      static_cast<int>(moves->size()) > 50) {
-    // all corner stones are solved
-    return;
-  }
+
   // shuffle the unsolved stone vector
   std::default_random_engine e(42);
   std::random_device rd;
   std::mt19937 g(rd());
   std::shuffle(unsolvedCorners.begin(), unsolvedCorners.end(), g);
 
+  /****************************************************************************
+   * NOTE: DO NOT REMOVE THIS CODE SECTION
+   * if you remove this, the algorithm will not terminate in approximately 15%
+   * of the cases
+   * I have no idea why this is the case, should work without, but apparently
+   * it doesn't
+   ***************************************************************************/
+  if (moves->size() > static_cast<size_t>(10)) { // threshold is arbitrary
+    int count = 0;
+    int currentLenOfMoves = moves->size();
+    // if the last 4 moves are X or V we entert a bad recursion loop
+    for (int j = 1; j <= 4; j++) {
+      if ((*moves)[currentLenOfMoves - j] == "X" ||
+          (*moves)[currentLenOfMoves - j] == "V") {
+        count++;
+      }
+      if (count > 2) {
+        bufferLetter = unsolvedCorners[0];
+      }
+    }
+  }
+
+  if (static_cast<int>(unsolvedCorners.size()) == 0) {
+    // all corner stones are solved
+    return;
+  }
+
   // if the current buffer stone is also the correct stone for the buffer
   //  ignore it and find not folved corner stones to solve next ...
   if (bufferLetter == 'A' || bufferLetter == 'E' || bufferLetter == 'Q') {
     bufferLetter = unsolvedCorners[0];
   }
-
-  std::cout << "[fucking debug print] " << bufferLetter << std::endl;
 
   moves->push_back(std::string(1, bufferLetter));
 
