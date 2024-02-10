@@ -20,41 +20,52 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -}
 
-module Cube (RubiksCube, newCube, possibleMoves, translateMove) where
+module Cube (RubiksCube
+            , newCube
+            , possibleMoves
+            , translateMove) where
 
 import Data.List (transpose, intercalate)
 
 data FaceColor = White | Red | Green | Blue | Orange | Yellow deriving (Eq, Show)
 
-newtype RubiksCube = RubiksCube { cube :: [[[Char]]] } deriving (Show)
+newtype RubiksCube = RubiksCube { getBoard :: [[[FaceColor]]] } deriving (Show)
 
 instance Eq RubiksCube where
-    (RubiksCube c1) == (RubiksCube c2) = c1 == c2
+    c1 == c2 = getBoard c1 == getBoard c2
+
+colorMap :: Char -> FaceColor
+colorMap c = case c of
+        'w' -> White
+        'r' -> Red
+        'b' -> Blue
+        'o' -> Orange
+        'g' -> Green
+        'y' -> Yellow
+        -- otherwise -> error $ "[COLOR MAP ERROR] invalid char ->" ++ c : "<-"
+        _ -> error $ "[COLOR MAP ERROR] invalid char ->" ++ c : "<-"
 
 {-|
 Some documentation ...
 -}
--- newCube withColor = RubiksCube [replicate 3 (replicate 3 e) | e <- [White, Red, Blue, Orange,  Green, Yellow]]
-newCube :: Bool -> RubiksCube
-newCube withColor = RubiksCube $ if withColor
-                                then [replicate 3 (replicate 3 e) | e <- "wrbogy"]
-                                else [
-                                    ["AaB","dWb","DcC"], ["EeF","hRf","HgG"], ["IiJ","lBj","LkK"],
-                                    ["MmN", "pOn","PoO"], ["QqR","tGr","TsS"], ["UuV","xYv","XwW"]
-                                ]
+newCube :: RubiksCube
+newCube = RubiksCube [replicate 3 (replicate 3  (colorMap e)) | e <- "wrbogy"]
 
 possibleMoves :: [String]
 possibleMoves = concat [map f ["F", "B", "U", "D", "L", "R"] | f <- [id, (++"2"), (++"'")]]
 
 translateMove :: String -> (RubiksCube -> RubiksCube)
-translateMove (x:xs) = case x of
+translateMove [] = id
+translateMove xss@(x:xs) = if not (elem xss possibleMoves)
+                           then error $ "[TRANSLATE MOVE ERROR] invalid move ->" ++ xss ++ "<-"
+                           else case x of
     'F' -> rep rotateFront
     'B' -> rep rotateBack
     'U' -> rep rotateUp
     'D' -> rep rotateDown
     'L' -> rep rotateLeft
     'R' -> rep rotateRight
-    _   -> id
+    _   -> error $ "[TRANSLATE MOVE ERROR] unknown move ->" ++ x : "<-"
     where
         rep f = foldr (.) id (replicate (case xs of "" -> 1; "2" -> 2; "'" -> 3; _ -> 0) f)
 
@@ -73,23 +84,51 @@ rotatingMatrixCounterClockwise = reverse . transpose
 Rotating the top side by 90 degrees clockwise. (white side)
 -}
 rotateUp :: RubiksCube -> RubiksCube
-rotateUp (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube [rotatingMatrixClockwise w,
-                                                         head b : tail r,
-                                                         head o : tail b,
-                                                         reverse (head g) : tail o,
-                                                         reverse (head r) : tail g, y]
+rotateUp (RubiksCube [w, r, b, o, g, y]) = RubiksCube [rotatingMatrixClockwise w,
+                                                       head b : tail r,
+                                                       head o : tail b,
+                                                       reverse (head g) : tail o,
+                                                       reverse (head r) : tail g,
+                                                       y]
 
 {-|
 Rotating the bottom side by 90 degrees clockwise. (yellow side)
 -}
 rotateDown :: RubiksCube -> RubiksCube
-rotateDown (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube c -- TODO
+rotateDown (RubiksCube [w, r, b, o, g, y]) = RubiksCube [w,
+                                                         (init r) ++ [last g],
+                                                         (init b) ++ [last r],
+                                                         (init o) ++ [last b],
+                                                         (init g) ++ [last o],
+                                                         rotatingMatrixCounterClockwise y]
 
 {-|
 Rotating the left side by 90 degrees clockwise. (red side)
 -}
 rotateLeft :: RubiksCube -> RubiksCube
-rotateLeft (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube c -- TODO
+rotateLeft (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw,
+                                                         rotatingMatrixClockwise r,
+                                                         nb, o, ng, ny]
+  where
+    nb = [(head . head) w : (tail . head) b,
+          head (w !! 1) : tail (b !! 1),
+          head (w !! 2) : tail (b !! 2)
+         ]
+
+    ng = [(head . head) y : (tail . head) g,
+          head (y !! 1) : tail (g !! 1),
+          head (y !! 2) : tail (g !! 2)
+         ]
+
+    nw = [(head . head) g : (tail . head) w,
+          head (g !! 1) : tail (w !! 1),
+          head (g !! 2) : tail (w !! 2)
+         ]
+
+    ny = [(head . head) b : (tail . head) y,
+          head (b !! 1) : tail (y !! 1),
+          head (b !! 2) : tail (y !! 2)
+         ]
 
 {-|
 Rotating the right side by 90 degrees clockwise. (orange side)

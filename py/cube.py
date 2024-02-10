@@ -5,7 +5,7 @@
 This module contains the Cube class.
 It is used to represent a Rubik's Cube and supports manipulation of the cube.
 
-Copyright (C) 2021-now  Felix D.
+Copyright (C) 2021-2024  Felix D.
 Created by felix on 09.03.2021 (%d.%m.%Y)
 
 This program is free software; you can redistribute it and/or modify
@@ -59,12 +59,12 @@ A uppercase letter is a unique identifier for a corner piece.
 A lowercase letter is a unique identifier for an edge piece.
 """
 LETTER_BOARD = [
-    [["A", "a", "B"], ["d", "𝗪", "b"], ["D", "c", "C"]],  # TOP SIDE
-    [["E", "e", "F"], ["h", "𝗥", "f"], ["H", "g", "G"]],  # LEFT SIDE
-    [["I", "i", "J"], ["l", "𝗕", "j"], ["L", "k", "K"]],  # FRONT SIDE
-    [["M", "m", "N"], ["p", "𝗢", "n"], ["P", "o", "O"]],  # RIGHT SIDE
-    [["Q", "q", "R"], ["t", "𝗚", "r"], ["T", "s", "S"]],  # BACK SIDE
-    [["U", "u", "V"], ["x", "𝗬", "v"], ["X", "w", "W"]],  # BOTTOM SIDE
+    [["A", "a", "B"], ["d", "W", "b"], ["D", "c", "C"]],  # TOP SIDE
+    [["E", "e", "F"], ["h", "R", "f"], ["H", "g", "G"]],  # LEFT SIDE
+    [["I", "i", "J"], ["l", "B", "j"], ["L", "k", "K"]],  # FRONT SIDE
+    [["M", "m", "N"], ["p", "O", "n"], ["P", "o", "O"]],  # RIGHT SIDE
+    [["Q", "q", "R"], ["t", "G", "r"], ["T", "s", "S"]],  # BACK SIDE
+    [["U", "u", "V"], ["x", "Y", "v"], ["X", "w", "W"]],  # BOTTOM SIDE
 ]
 
 
