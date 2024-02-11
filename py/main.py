@@ -378,7 +378,7 @@ def solution_schedule() -> None:
     solution_moves = []
     solution_moves += map(lambda x: MOVE_FOR_SWAPPING_BUFFER_WITH_TARGET_CENTER[x], s_center)
 
-    if s_corner[0] == "Parity":
+    if len(s_corner) >= 1 and s_corner[0] == "Parity":
         solution_moves.append(R_PERM)
         s_corner = s_corner[1:]
 

@@ -37,9 +37,6 @@ FACE rotateMatrix(FACE a, int num);
 
 /**
  * SOLVED_BOARD contains a list of all faces of a solved cube.
- *
- * https://stackoverflow.com/a/62252088
- * >>Note the extra set of braces. It seems a bit odd but ...<<
  * */
 const BOARD SOLVED_BOARD = {{{{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}},
                              {{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}},
@@ -86,6 +83,7 @@ const std::map<std::tuple<char, char, char>, char>
         {{'r', 'b', 'y'}, 'G'}, {{'b', 'y', 'r'}, 'L'}, {{'y', 'r', 'b'}, 'U'}};
 
 // clang-format off
+
 /**
  * PERMS USED:
  * I.   | Y-Perm   / Ecken-Algorithmus     |  => (F) R U' R' U' R U R' F' R U R' U' R' F R (F')
@@ -94,13 +92,13 @@ const std::map<std::tuple<char, char, char>, char>
  * IV.  | J-Perm a / Kanten-Algorithmus 2  |  => R U R' F' R U R' U' R' F R2 U' R' U'
  * V.   | J-Perm b / Kanten-Algorithmus 3  |  => U' R' U L' U2 R U' R' U2 L R
  */
-// clang-format on
-
 const std::string Y_PERM = "F R U' R' U' R U R' F' R U R' U' R' F R F'";
 const std::string R_PERM = "R U' R' U' R U R D R' U' R D' R' U2 R' U'";
 const std::string T_PERM = "R U R' U' R' F R2 U' R' U' R U R' F'";
 const std::string J_PERM_DOWN = "R U R' F' R U R' U' R' F R2 U' R' U'";
 const std::string J_PERM_UP = "U' R' U L' U2 R U' R' U2 L R";
+
+// clang-format on
 
 /**
  * Permutation used to swap the current buffer piece with the correct one

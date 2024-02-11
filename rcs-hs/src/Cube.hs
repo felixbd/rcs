@@ -23,9 +23,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 module Cube (RubiksCube
             , newCube
             , possibleMoves
-            , translateMove) where
+            , translateMove
+            , applyMove
+            ) where
 
-import Data.List (transpose, intercalate)
+import Data.List (transpose)  -- , intercalate)
 
 data FaceColor = White | Red | Green | Blue | Orange | Yellow deriving (Eq, Show)
 
@@ -54,6 +56,90 @@ newCube = RubiksCube [replicate 3 (replicate 3  (colorMap e)) | e <- "wrbogy"]
 possibleMoves :: [String]
 possibleMoves = concat [map f ["F", "B", "U", "D", "L", "R"] | f <- [id, (++"2"), (++"'")]]
 
+-- begin moves -----------------------------------------------------------------
+
+rotatingMatrixClockwise :: [[a]] -> [[a]]
+rotatingMatrixClockwise = transpose . reverse
+
+rotatingMatrixCounterClockwise :: [[a]] -> [[a]]
+rotatingMatrixCounterClockwise = reverse . transpose
+
+{-|
+Rotating the top side by 90 degrees clockwise. (white side)
+-}
+rotateUp :: RubiksCube -> RubiksCube
+rotateUp (RubiksCube [w, r, b, o, g, y]) = RubiksCube [rotatingMatrixClockwise w,
+                                                       head b : tail r,
+                                                       head o : tail b,
+                                                       reverse (head g) : tail o,
+                                                       reverse (head r) : tail g,
+                                                       y]
+
+{-|
+Rotating the bottom side by 90 degrees clockwise. (yellow side)
+-}
+rotateDown :: RubiksCube -> RubiksCube
+rotateDown (RubiksCube [w, r, b, o, g, y]) = RubiksCube [w,
+                                                         (init r) ++ [(reverse . last) g],
+                                                         (init b) ++ [last r],
+                                                         (init o) ++ [last b],
+                                                         (init g) ++ [(reverse . last) o],
+                                                         rotatingMatrixCounterClockwise y]
+
+{-|
+Rotating the left side by 90 degrees clockwise. (red side)
+-}
+rotateLeft :: RubiksCube -> RubiksCube
+rotateLeft (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw,
+                                                         rotatingMatrixClockwise r,
+                                                         nb, o, ng, ny]
+  where
+    nb = [head (w !! i) : tail (b !! i) | i <- [0..2]]
+    ny = [head (b !! i) : tail (y !! i) | i <- [0..2]]
+    ng = [head (y !! i) : tail (g !! j) | (i, j) <- [(2, 0), (1, 1), (0, 2)]]
+    nw = [head (g !! i) : tail (w !! j) | (i, j) <- [(2, 0), (1, 1), (0, 2)]]
+
+{-|
+Rotating the right side by 90 degrees clockwise. (orange side)
+-}
+rotateRight :: RubiksCube -> RubiksCube
+rotateRight (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw, r, nb,
+                                                          rotatingMatrixClockwise o,
+                                                          ng, ny]
+  where
+    nw = [init (w !! i) ++ [last (b !! i)] | i <- [0..2]]
+    nb = [init (b !! i) ++ [last (y !! i)] | i <- [0..2]]
+    ng = [init (g !! i) ++ [last (w !! j)] | (i, j) <- [(0, 2), (1, 1), (2, 0)]]
+    ny = [init (y !! i) ++ [last (g !! j)] | (i, j) <- [(0,2), (1, 1), (2, 0)]]
+
+{-|
+Rotating the front side by 90 degrees clockwise. (blue side)
+-}
+rotateFront :: RubiksCube -> RubiksCube
+rotateFront (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw, nr,
+                                                          rotatingMatrixClockwise b,
+                                                          no, g, ny]
+  where
+    nw = init w ++ [ [last (r !! i) | i <- [2,1,0]] ]
+    nr = [init (r !! i) ++ [ last (y !! i) ] | i <- [0..2]]
+    no = [(last w) !! i : tail (o !! i) | i <- [0..2]]
+    ny = [[head (o !! i) | i <- [2,1,0]]] ++ tail y
+
+{-|
+Rotating the back side by 90 degrees clockwise. (green side)
+-}
+rotateBack :: RubiksCube -> RubiksCube
+rotateBack (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw, nr, b, no,
+                                                           rotatingMatrixCounterClockwise g,
+                                                           ny]
+  where
+    nw = [ [last (o !! i) | i <- [0..2]] ] ++ tail w
+    nr = [ [(head w) !! i] ++ tail (r !! j) | (i, j) <- [(2, 0), (1, 1), (0, 2)]]
+    no = [ init (o !! i) ++ [(last y) !! j] | (i, j) <- [(0, 2), (1, 1), (2, 0)] ]
+    ny = init y ++ [[ head (r !! i) | i <- [0..2] ]]
+
+-- end moves -------------------------------------------------------------------
+
 translateMove :: String -> (RubiksCube -> RubiksCube)
 translateMove [] = id
 translateMove xss@(x:xs) = if not (elem xss possibleMoves)
@@ -73,77 +159,4 @@ translateMove xss@(x:xs) = if not (elem xss possibleMoves)
 applyMove :: [String] -> RubiksCube -> RubiksCube
 applyMove xs c = foldr (.) id (map translateMove xs) c
 
-rotatingMatrixClockwise :: [[a]] -> [[a]]
-rotatingMatrixClockwise = transpose . reverse
-
-rotatingMatrixCounterClockwise :: [[a]] -> [[a]]
-rotatingMatrixCounterClockwise = reverse . transpose
-
-
-{-|
-Rotating the top side by 90 degrees clockwise. (white side)
--}
-rotateUp :: RubiksCube -> RubiksCube
-rotateUp (RubiksCube [w, r, b, o, g, y]) = RubiksCube [rotatingMatrixClockwise w,
-                                                       head b : tail r,
-                                                       head o : tail b,
-                                                       reverse (head g) : tail o,
-                                                       reverse (head r) : tail g,
-                                                       y]
-
-{-|
-Rotating the bottom side by 90 degrees clockwise. (yellow side)
--}
-rotateDown :: RubiksCube -> RubiksCube
-rotateDown (RubiksCube [w, r, b, o, g, y]) = RubiksCube [w,
-                                                         (init r) ++ [last g],
-                                                         (init b) ++ [last r],
-                                                         (init o) ++ [last b],
-                                                         (init g) ++ [last o],
-                                                         rotatingMatrixCounterClockwise y]
-
-{-|
-Rotating the left side by 90 degrees clockwise. (red side)
--}
-rotateLeft :: RubiksCube -> RubiksCube
-rotateLeft (RubiksCube [w, r, b, o, g, y]) = RubiksCube [nw,
-                                                         rotatingMatrixClockwise r,
-                                                         nb, o, ng, ny]
-  where
-    nb = [(head . head) w : (tail . head) b,
-          head (w !! 1) : tail (b !! 1),
-          head (w !! 2) : tail (b !! 2)
-         ]
-
-    ng = [(head . head) y : (tail . head) g,
-          head (y !! 1) : tail (g !! 1),
-          head (y !! 2) : tail (g !! 2)
-         ]
-
-    nw = [(head . head) g : (tail . head) w,
-          head (g !! 1) : tail (w !! 1),
-          head (g !! 2) : tail (w !! 2)
-         ]
-
-    ny = [(head . head) b : (tail . head) y,
-          head (b !! 1) : tail (y !! 1),
-          head (b !! 2) : tail (y !! 2)
-         ]
-
-{-|
-Rotating the right side by 90 degrees clockwise. (orange side)
--}
-rotateRight :: RubiksCube -> RubiksCube
-rotateRight (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube c -- TODO
-
-{-|
-Rotating the front side by 90 degrees clockwise. (blue side)
--}
-rotateFront :: RubiksCube -> RubiksCube
-rotateFront (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube c -- TODO
-
-{-|
-Rotating the back side by 90 degrees clockwise. (green side)
--}
-rotateBack :: RubiksCube -> RubiksCube
-rotateBack (RubiksCube c@[w, r, b, o, g, y]) = RubiksCube c -- TODO
+---
